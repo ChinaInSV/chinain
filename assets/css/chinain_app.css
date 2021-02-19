@@ -1,0 +1,13 @@
+.table-selected-item{
+	background-color:#34495e!important;
+	color:#FFF;
+}
+/*Nueva Orden*/
+.plato-cant-field, .plato-nombre-field{padding:16px 5px!important;}
+
+.ufood-transaccion-table{
+	width: 100%
+}
+.ufood-transaccion-table tr > td{
+	padding: 8px 5px;
+}
