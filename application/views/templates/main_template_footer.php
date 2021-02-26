@@ -16,7 +16,7 @@
 	<script src="<?php echo base_url();?>assets/plugins/custombox/js/custombox.min.js"></script>
 	<script src="<?php echo base_url();?>assets/plugins/toastr/toastr.min.js"></script>
 	<script src="<?php echo base_url();?>assets/plugins/zebra/js/zebra_dialog.src.js"></script>
-	<script src="<?php echo base_url();?>assets/plugins/sweetalert/js/sweetalert2.min.js"></script>
+	<script src="<?php echo base_url();?>assets/plugins/sweetalert/js/sweetalert.min.js"></script>
 	<script src="<?php echo base_url();?>assets/plugins/jquery_hotkeys/jquery.hotkeys.js"></script>
 	<script src="<?php echo base_url();?>assets/js/idle-timer.js"></script>
 	<script>

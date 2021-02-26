@@ -22,7 +22,6 @@
 	<div class="panel-body">
 		<ul id="tab-list" class="nav nav-tabs" role="tablist">
 		<input type="hidden" id="detalles-mesa-id" value="<?php echo $mesa;?>">
-		<input type="hidden" id="detalles-orden-razon-eliminar" value="">
 		<?php if(isset($ordenes)):$order_num=1;foreach($ordenes as $orden):?>
 			<li class="<?php echo ($order_num==1)?"active":"";?>"><a href="#tab<?php echo $order_num;?>" role="tab" data-toggle="tab">Orden <?php echo $orden->num_orden;?> <button class="close mar-lft" type="button" title="Cerrar Orden">×</button></a></li>
 		<?php $order_num++;endforeach;?>
@@ -75,7 +74,7 @@
 							<tbody>
 								<?php if(count($orden->platos)):foreach($orden->platos as $plato):?>
 								<tr style="<?php echo ($plato->eliminado)?"text-decoration:line-through;":"";?>">
-									<td class="text-center"><i class="fa fa-circle fa-1x text-<?php echo ($plato->despachado==0)?"default":"success";?>"></i></td>
+									<td class="text-center"><i class="fa fa-circle fa-1x text-<?php echo ($plato->eliminado)?"danger":"success";?>"></i></td>
 									<td class="text-center"><span class="text-main text-semibold"><?php echo number_format($plato->cant,$config->cant_decimal_precision->value)?></span></td>
 									<td>
 										<span class="text-main text-semibold"><?php echo $plato->nombre?></span>
@@ -97,9 +96,6 @@
 									<td class="text-right"><span class="text-main"><?php echo number_format($plato->cant*$plato->precio,$config->precios_decimal_precision->value);?></span></td>
 									<td class="text-center">
 										<button class="btn btn-info btn-icon btn-circle orden-plato-detail-btn" data-id="<?php echo $plato->platoxorden;?>"><i class="fa fa-info"></i></button>
-										<?php if($config->modificar_precios->value == 1):?>
-										<button class="btn btn-mint btn-icon btn-circle orden-plato-update-btn" data-id="<?php echo $plato->platoxorden;?>"><i class="fa fa-edit"></i></button>
-										<?php endif;?>
 										<button class="btn btn-danger btn-icon btn-circle orden-plato-delete-btn <?php echo ($plato->eliminado)?"not-active":"";?>" data-id="<?php echo $plato->platoxorden;?>"><i class="fa fa-trash"></i></button>
 									</td>
 								</tr>
@@ -146,7 +142,6 @@
 					<div class="col-md-12 mar-top bord-top pad-top text-center">
 						<!--<button class="btn btn-lg btn-danger mar-top orden-detalles-eliminar-btn" data-id="<?php echo $orden->id;?>">Eliminar Orden</button>-->
 						<button class="btn btn-lg btn-mint mar-top orden-detalles-precuenta-btn" data-id="<?php echo $orden->id;?>">Pre Cuenta</button>
-						<button class="btn btn-lg btn-warning mar-top orden-detalles-dividir-btn" data-id="<?php echo $orden->id;?>">Dividir</button>
 						<button class="btn btn-lg btn-success mar-top orden-detalles-cobrar-btn" data-id="<?php echo $orden->id;?>">Cobrar</button>
 					</div>
 				</div>

@@ -44,10 +44,10 @@
 		$phpPrinter->printString($phpPrinter->cutString(strtoupper(utf8_decode($direcion_empresa)),28),1,$printer,$acum,$tabheight_letter,$tabwidth_letter);
 		$phpPrinter->printString($phpPrinter->cutString(strtoupper(utf8_decode('NRC: '.$nrc_empresa)),28),1,$printer,$acum,$tabheight_letter,$tabwidth_letter);
 		$phpPrinter->printString($phpPrinter->cutString(strtoupper(utf8_decode('NIT: '.$nit_empresa)),28),1,$printer,$acum,$tabheight_letter,$tabwidth_letter);
-		$phpPrinter->printString($phpPrinter->cutString(strtoupper(utf8_decode('Autorizacion segun Resolucion')),28),1,$printer,$acum,$tabheight_letter,$tabwidth_letter);
-		$phpPrinter->printString($phpPrinter->cutString(strtoupper(utf8_decode('No '.$doc_resolucion)),28),1,$printer,$acum,$tabheight_letter,$tabwidth_letter);
-		$phpPrinter->printString($phpPrinter->cutString(strtoupper(utf8_decode('Del '.$doc_desde)),28),1,$printer,$acum,$tabheight_letter,$tabwidth_letter);
-		$phpPrinter->printString($phpPrinter->cutString(strtoupper(utf8_decode('Al '.$doc_hasta)),28),1,$printer,$acum,$tabheight_letter,$tabwidth_letter);
+		//$phpPrinter->printString($phpPrinter->cutString(strtoupper(utf8_decode('Autorizacion segun Resolucion')),28),1,$printer,$acum,$tabheight_letter,$tabwidth_letter);
+		//$phpPrinter->printString($phpPrinter->cutString(strtoupper(utf8_decode('No '.$doc_resolucion)),28),1,$printer,$acum,$tabheight_letter,$tabwidth_letter);
+		//$phpPrinter->printString($phpPrinter->cutString(strtoupper(utf8_decode('Del '.$doc_desde)),28),1,$printer,$acum,$tabheight_letter,$tabwidth_letter);
+		//$phpPrinter->printString($phpPrinter->cutString(strtoupper(utf8_decode('Al '.$doc_hasta)),28),1,$printer,$acum,$tabheight_letter,$tabwidth_letter);
 		$phpPrinter->printString($phpPrinter->cutString(strtoupper(utf8_decode('Caja: 1')),28),1,$printer,$acum,$tabheight_letter,$tabwidth_letter);
 		$phpPrinter->printString($phpPrinter->cutString(strtoupper(utf8_decode('Vendedor: '.$cajero)),28),1,$printer,$acum,$tabheight_letter,$tabwidth_letter);
 		
@@ -81,7 +81,7 @@
 		/*Propina*/
 		$phpPrinter->printString(utf8_decode('Total Propina:'),2,$printer,$acum,$tabheight_letter,$tabwidth_letter,0);
 		$phpPrinter->printString(utf8_decode('$'),2,$printer,$acum,$tabheight_letter,0,250);
-		$phpPrinter->printString(number_format(($dataCorteFiscal['total_propina_declarada']+$dataCorteFiscal['total_propina_declarada_pos']),2),2,$printer,$acum,$tabheight_letter,0,270);
+		$phpPrinter->printString(number_format(($dataCorteFiscal['total_propina']+$dataCorteFiscal['total_propina_pos']),2),2,$printer,$acum,$tabheight_letter,0,270);
 		
 		printer_draw_line($printer, 0, $phpPrinter->getAcum()+$tabwidth_letter, 550, $phpPrinter->getAcum()+$tabwidth_letter);
 		$phpPrinter->tabPrinter($acum,5);
@@ -121,7 +121,7 @@
 		
 		printer_draw_line($printer, 0, $phpPrinter->getAcum()+$tabwidth_letter, 550, $phpPrinter->getAcum()+$tabwidth_letter);
 		$phpPrinter->tabPrinter($acum,5);
-		$total_ventas = $dataCorteFiscal['total_propina_declarada']+$dataCorteFiscal['total_propina_declarada_pos']+$dataCorteFiscal['total_ticket_grabado']+$dataCorteFiscal['total_ticket_exento']+$dataCorteFiscal['total_ticket_nosujeto']+$dataCorteFiscal['total_factura_grabado']+$dataCorteFiscal['total_factura_exento']+$dataCorteFiscal['total_factura_nosujeto']+$dataCorteFiscal['total_ccf_grabado']+$dataCorteFiscal['total_ccf_exento']+$dataCorteFiscal['total_ccf_nosujeto'];
+		$total_ventas = $dataCorteFiscal['total_propina']+$dataCorteFiscal['total_propina_pos']+$dataCorteFiscal['total_ticket_grabado']+$dataCorteFiscal['total_ticket_exento']+$dataCorteFiscal['total_ticket_nosujeto']+$dataCorteFiscal['total_factura_grabado']+$dataCorteFiscal['total_factura_exento']+$dataCorteFiscal['total_factura_nosujeto']+$dataCorteFiscal['total_ccf_grabado']+$dataCorteFiscal['total_ccf_exento']+$dataCorteFiscal['total_ccf_nosujeto'];
 		
 		/*Devoluciones*/
 		$phpPrinter->printString(utf8_decode('Dev. Tickets:'),2,$printer,$acum,$tabheight_letter,$tabwidth_letter,0);

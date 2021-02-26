@@ -79,7 +79,6 @@ $db['default'] = array(
 	'username' => 'root',
 	'password' => '',
 	'database' => 'ufood2_chinain_db',
-	//'database' => 'china_pruebas',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

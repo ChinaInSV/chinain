@@ -28,7 +28,7 @@
 	<link href="<?php echo base_url();?>assets/plugins/custombox/css/custombox.min.css" rel="stylesheet">
 	<link href="<?php echo base_url();?>assets/plugins/toastr/toastr.min.css" rel="stylesheet">
 	<link href="<?php echo base_url();?>assets/plugins/zebra/css/flat/zebra_dialog.css" rel="stylesheet">
-    <link href="<?php echo base_url();?>assets/plugins/sweetalert/css/sweetalert2.css" rel="stylesheet">
+    <link href="<?php echo base_url();?>assets/plugins/sweetalert/css/sweetalert.css" rel="stylesheet">
 	<link href="<?php echo base_url();?>assets/plugins/pace/css/pace.min.css" rel="stylesheet">
        
     <script src="<?php echo base_url();?>assets/plugins/pace/js/pace.min.js"></script>

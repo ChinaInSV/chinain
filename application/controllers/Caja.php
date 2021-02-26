@@ -83,11 +83,26 @@ class Caja extends CI_Controller{
 				}else{
 					$UIDataModal["content_view"]="error_nodisponible_view";
 				}
+				$ref=$this->input->get("transaccion");
+				$winid=$this->input->get("winid");
+				$venta=$this->Generic_model->get("q","ventas","*",array("id_venta"=>$ref));
+				$venta=$venta[0];
+				if(count($venta)){
+					if($venta->estado_venta==0){
+						$productosxventa=$this->Generic_model->get("q","vproductosxventa","vproductosxventa.id_plato as id, platos.nombre_plato as nombre,cant_vproducto as cant, costo_vproducto as precio",array("vproductosxventa.id_venta"=>$ref),"","",array("platos"=>"platos.id_plato=vproductosxventa.id_plato,LEFT"));
+						$UIDataModal["info_venta"]=$venta;
+						$UIDataModal["productos"]=$productosxventa;
+						$UIDataModal["winid"]=$winid;
+						//$this->load->view('home/home_devolucion_info_view',$data);
+						$UIDataModal["close_button"]=true;
+						$UIDataModal["classes"]="modal-lg";
+						$UIDataModal["id"]="inventario-nueva-entrada-modal";
+						$this->load->view('templates/template_modal',$UIDataModal);
+
+				}
 				//$UIDataModal['productos']=$productos;
-				$UIDataModal["close_button"]=true;
-				$UIDataModal["classes"]="modal-lg";
-				$UIDataModal["id"]="inventario-nueva-entrada-modal";
-				$this->load->view('templates/template_modal',$UIDataModal);
+				
+			}
 			}
 		function cargar_devoluciones(){
 			
@@ -185,7 +200,7 @@ class Caja extends CI_Controller{
 			}
 			
 			/*Obtener ventas*/
-			$ventasSQL="(SELECT estado_venta as estado,servicio_venta as servicio,forma_pago_venta as medio,origen_venta as origen,documento_venta as documento,num_doc_venta as documento_numero,subtotal_venta as grabado,total_exento_venta as exento,total_nosujeto_venta as nosujeto,iva_venta as iva,propina_venta as propina,retencion_venta as retencion,percepcion_venta as percepcion,descuento_venta as descuento,((subtotal_venta+total_exento_venta+total_nosujeto_venta+iva_venta+propina_venta)-descuento_venta) as total FROM ventas WHERE id_caja = '".$this->caja->id_caja."' AND fecha_venta > '".$lastCorte."' AND (documento_venta = '0' OR documento_venta = '1' OR documento_venta = '2' OR documento_venta = '9') AND estado_venta=0 ORDER BY fecha_venta ASC)";
+			$ventasSQL="(SELECT estado_venta as estado,servicio_venta as servicio,forma_pago_venta as medio,origen_venta as origen,documento_venta as documento,num_doc_venta as documento_numero,subtotal_venta as grabado,total_exento_venta as exento,total_nosujeto_venta as nosujeto,iva_venta as iva,propina_venta as propina,retencion_venta as retencion,percepcion_venta as percepcion,descuento_venta as descuento,((subtotal_venta+total_exento_venta+total_nosujeto_venta+iva_venta+propina_venta)-descuento_venta) as total FROM ventas WHERE id_caja = '".$this->caja->id_caja."' AND fecha_venta > '".$lastCorte."' AND (documento_venta = '0' OR documento_venta = '1' OR documento_venta = '2') AND estado_venta=0 ORDER BY fecha_venta ASC)";
 			$ventas=$this->Generic_model->sql_custom($ventasSQL);
 			
 			$usuarios = $this->Generic_model->get("q","usuarios");
@@ -219,7 +234,6 @@ class Caja extends CI_Controller{
 			$total_para_comer_aca=$total_para_llevar=$total_domicilio=$total_domicilio_a_pie=$total_domicilio_efectivo_cc=$total_domicilio_pos_cc=0;
 			$total_ventas_efectivo=$total_ventas_pos=0;
 			$propina=$propina_pos=0;
-			$propina_declarada=$propina_declarada_pos=0;
 			$total_ventas_efectivo_cc=$total_ventas_pos_cc=0;
 			
 			/*------- CALCULO DE TOTALES DE VENTA -------*/
@@ -260,12 +274,6 @@ class Caja extends CI_Controller{
 							}
 							/*ultimo ticket*/
 							$ticketFin=$venta->documento_numero;
-
-							if(isset($medio[1])){
-								$propina_declarada_pos+=$venta->propina;
-							}else{
-								$propina_declarada+=$venta->propina;
-							}
 						break;
 						case 1:/*Factura*/
 							/*Segun tipo venta*/
@@ -273,11 +281,6 @@ class Caja extends CI_Controller{
 							$total_factura_exento+=$venta->exento;
 							$total_factura_nosujeto+=$venta->nosujeto;
 							$total_trans_factura++;
-							if(isset($medio[1])){
-								$propina_declarada_pos+=$venta->propina;
-							}else{
-								$propina_declarada+=$venta->propina;
-							}
 						break;
 						case 2:/*CCF*/
 							/*Segun tipo venta*/
@@ -285,18 +288,6 @@ class Caja extends CI_Controller{
 							$total_ccf_exento+=$venta->exento;
 							$total_ccf_nosujeto+=$venta->nosujeto;
 							$total_trans_ccf++;
-							if(isset($medio[1])){
-								$propina_declarada_pos+=$venta->propina;
-							}else{
-								$propina_declarada+=$venta->propina;
-							}
-						break;
-						case 9:/*Ninguno*/
-							/*Segun tipo venta*/
-							$total_sdocumento_grabado+=$venta->grabado+$venta->iva+$venta->percepcion-($venta->retencion+$venta->descuento);
-							$total_sdocumento_exento+=$venta->exento;
-							$total_sdocumento_nosujeto+=$venta->nosujeto;
-							$total_trans_sdocumento++;
 						break;
 					}				
 					
@@ -389,15 +380,12 @@ class Caja extends CI_Controller{
 				"total_ventas_efectivo_cc"=>$total_ventas_efectivo_cc,
 				"total_ventas_pos_cc"=>$total_ventas_pos_cc,
 				"total_propina"=>$propina,
-				"total_propina_declarada"=>$propina_declarada,
-				"total_propina_declarada_pos"=>$propina_declarada_pos,
 				"total_propina_pos"=>$propina_pos,
 				"dotacion"=>$this->caja->dotacion_caja
 			);
 			
-			$platos=$this->Generic_model->get("q","platos","*",array("platosxcategoria.id_categoria_menu!="=>10),"","",array("platosxcategoria"=>"platosxcategoria.id_plato=platos.id_plato"),"","platos.id_plato");
-			$platosh=$this->Generic_model->get("q","platos","*",array("platosxcategoria.id_categoria_menu"=>10),"","",array("platosxcategoria"=>"platosxcategoria.id_plato=platos.id_plato"),"","platos.id_plato");
-			$ordenes=$this->Generic_model->get("q","ordenes","*",array("fecha_elimin_orden >"=>$lastCorte),"","",array("usuarios"=>"usuarios.id_usuario=ordenes.usuario_elimin_orden","mesas"=>"mesas.id_mesa=ordenes.id_mesa"));
+			$platos=$this->Generic_model->get("q","platos","*",array("platosxcategoria.id_categoria_menu!="=>10),"","",array("platosxcategoria"=>"platosxcategoria.id_plato=platos.id_plato"));
+			$platosh=$this->Generic_model->get("q","platos","*",array("platosxcategoria.id_categoria_menu"=>10),"","",array("platosxcategoria"=>"platosxcategoria.id_plato=platos.id_plato"));
 			$dataCorteConsumoTxt="";
 			$mensaje="";
 			if($getType==2 || filter_var($this->input->get("email"),FILTER_VALIDATE_BOOLEAN)){
@@ -405,10 +393,9 @@ class Caja extends CI_Controller{
 					$mensaje="";
 					$mensaje.="Total ventas ".$this->app_utilities->fechaHoraElSalvador($fecha,1)."<strong> $ ".(($total_ccf_grabado+$total_factura_grabado+$total_ticket_grabado+$propina+$propina_pos)-$total_devolucion_ticket)."</strong><br><br>";
 					$sendmail=false;
-					$mensaje.="<strong>Detalle de platos (Ventas Locales):</strong><br>";
 					
-					/*Platos Locales En restaurante*/
-					$mensaje.="<strong>En Restaurante:</strong><br>";
+					/*Platos Locales*/
+					$mensaje.="<strong>Detalle de platos (Ventas Locales):</strong><br>";
 					$total_platos=0;
 					$total_dinero_platos=0;
 					foreach($platos as $plato){
@@ -417,8 +404,7 @@ class Caja extends CI_Controller{
 							"id_plato"=>$plato->id_plato,
 							"fecha_venta >"=>$lastCorte,
 							"estado_venta"=>0,
-							"origen_venta"=>0,
-							"servicio_venta"=>"Para comer aca"
+							"origen_venta"=>0
 						);
 						$transacciones=$this->Generic_model->get("q","vproductosxventa","SUM(cant_vproducto * costo_vproducto) as Total, SUM(cant_vproducto) as Platos",$wheres,"","",array("ventas"=>"ventas.id_venta=vproductosxventa.id_venta"));
 						if(isset($transacciones)){
@@ -432,61 +418,7 @@ class Caja extends CI_Controller{
 							endif;
 						}
 					}
-					$mensaje.="<strong>Total platos en Restaurante:</strong> ".$total_platos.", $".($total_dinero_platos)."<br><br>";
-
-					/*Platos Locales Para llevar*/
-					$mensaje.="<strong>Para llevar:</strong><br>";
-					$total_platos=0;
-					$total_dinero_platos=0;
-					foreach($platos as $plato){
-						$transacciones="";
-						$wheres=array(
-							"id_plato"=>$plato->id_plato,
-							"fecha_venta >"=>$lastCorte,
-							"estado_venta"=>0,
-							"origen_venta"=>0,
-							"servicio_venta"=>"Para llevar"
-						);
-						$transacciones=$this->Generic_model->get("q","vproductosxventa","SUM(cant_vproducto * costo_vproducto) as Total, SUM(cant_vproducto) as Platos",$wheres,"","",array("ventas"=>"ventas.id_venta=vproductosxventa.id_venta"));
-						if(isset($transacciones)){
-							$plato->pagos=$transacciones[0]->Total;
-							$plato->platos=$transacciones[0]->Platos;
-							$sendmail=true;
-							if($plato->platos>0 AND $plato->pagos>0):
-								$mensaje.=number_format($plato->platos,0)." ".$plato->nombre_plato." $ ".number_format($plato->pagos,2)."<br>";
-								$total_platos+=number_format($plato->platos,0);
-								$total_dinero_platos+=number_format($plato->pagos,2);
-							endif;
-						}
-					}
-					$mensaje.="<strong>Total platos para llevar:</strong> ".$total_platos.", $".($total_dinero_platos)."<br><br>";
-
-					/*Platos Locales domicilio*/
-					$mensaje.="<strong>Domicilio:</strong><br>";
-					$total_platos=0;
-					$total_dinero_platos=0;
-					foreach($platos as $plato){
-						$transacciones="";
-						$wheres=array(
-							"id_plato"=>$plato->id_plato,
-							"fecha_venta >"=>$lastCorte,
-							"estado_venta"=>0,
-							"origen_venta"=>0,
-							"servicio_venta"=>"Domicilio"
-						);
-						$transacciones=$this->Generic_model->get("q","vproductosxventa","SUM(cant_vproducto * costo_vproducto) as Total, SUM(cant_vproducto) as Platos",$wheres,"","",array("ventas"=>"ventas.id_venta=vproductosxventa.id_venta"));
-						if(isset($transacciones)){
-							$plato->pagos=$transacciones[0]->Total;
-							$plato->platos=$transacciones[0]->Platos;
-							$sendmail=true;
-							if($plato->platos>0 AND $plato->pagos>0):
-								$mensaje.=number_format($plato->platos,0)." ".$plato->nombre_plato." $ ".number_format($plato->pagos,2)."<br>";
-								$total_platos+=number_format($plato->platos,0);
-								$total_dinero_platos+=number_format($plato->pagos,2);
-							endif;
-						}
-					}
-					$mensaje.="<strong>Total platos Domicilio:</strong> ".$total_platos.", $".($total_dinero_platos)."<br><br>";
+					$mensaje.="<strong>Total platos:</strong> ".$total_platos.", $".($total_ventas_efectivo+$total_ventas_pos)."<br><br>";
 
 					/*Platos Call Center*/
 					$mensaje.="<strong>Detalle de platos (Ventas desde Call Center):</strong><br>";
@@ -644,19 +576,11 @@ class Caja extends CI_Controller{
 						}
 					}
 					$mensaje.="<strong>Total platos HUGO:</strong> ".$total_platosh.", $".($total_dinero_platosh)."<br>";
-				}
-				if(count($ordenes)){
-					$mensaje.="<br><br><strong>Detalle de Ordenes Eliminadas:</strong><br>";
-					$mensaje.="<table border='1' cellspacing='0'><thead><tr><th>Cliente</th><th>Mesa</th><th>Usuario</th><th>Motivo</th><th>Total</th></tr></thead><tbody>";
-					foreach($ordenes as $orden):
-						$mensaje.="<tr><td>".$orden->cliente_orden."</td><td>".$orden->nombre_mesa."</td><td>".$orden->nombre_usuario."</td><td></td><td>$".number_format(($orden->sub_total_orden+$orden->propina_orden),2)."</td></tr>";
-					endforeach;
-					$mensaje.="</tbody></table>";
-				}	
+				}				
 				
 				if($sendmail && filter_var($this->input->get("email"),FILTER_VALIDATE_BOOLEAN)){
 					$nombre_ubicacion_empresa=$this->ufood_utilities->get_conf_value((object) array("nombre_ubicacion_empresa"=>(object) array("db_campo"=>"nombre_ubicacion_empresa","default"=>"")));
-					//$this->app_utilities->send($mensaje,$getType,$nombre_ubicacion_empresa->nombre_ubicacion_empresa->value);
+					$this->app_utilities->send($mensaje,$getType,$nombre_ubicacion_empresa->nombre_ubicacion_empresa->value);
 				}
 			}else{
 				$total_dinero_platosh=0;

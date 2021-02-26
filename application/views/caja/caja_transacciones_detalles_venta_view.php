@@ -8,133 +8,62 @@
 					<div class="ibox-title">
 						<h5>Informacion de la venta</h5>
 					</div>
-					<div class="ibox-content" >
-						<div id="venta-detalles-wrapper" style="height:80px;overflow:hidden;">
+					<div style="height:80px;">
+						<div class="row pad-top">
 							<div class="col-sm-4">
-								<!--Fecha-->
-								<p style="margin:0px;">
-									<label class="control-label">Fecha:</label> <span class="info-venta-item" id="detalles-venta-fecha" data-value="<?php echo (isset($venta->fecha_venta)?date("d-m-Y H:i:s",strtotime($venta->fecha_venta)):"-");?>"> <?php echo (isset($venta->fecha_venta)?date("d-m-Y H:i:s",strtotime($venta->fecha_venta)):"-");?></span>
-								</p>
-								<!--Documento-->
-								<p style="margin:0px;">
-									<label class="control-label">Documento:</label> <span class="info-venta-item" id="detalles-venta-info-doc"> <?php echo (isset($venta->documento_venta)?$venta->documento_venta:"-");?></span>
-								</p>
-								<!--Serie y numero-->
-								<p style="margin:0px;">
-									<label class="control-label">N&uacute;mero:</label> <span class="info-venta-item" id="detalles-venta-info-numdoc" data-value="<?php echo (isset($venta->num_documento_venta)?$venta->num_documento_venta:"-");?>"> <?php echo (isset($venta->serie_autorizada)?$venta->serie_autorizada." ":"- "); echo (isset($venta->num_documento_venta)?$venta->num_documento_venta:"-");?></i></span>
-								</p>
-								<!--Referencia-->
-								<p style="margin:0px;">
-									<label class="control-label">ID Transacci&oacute;n:</label> <span class="info-venta-item" id="detalles-venta-info-id" data-value="<?php echo (isset($venta->id_venta)?"V-".$venta->id_venta:"-");?>"> <?php echo (isset($venta->id_venta)?"V-".$venta->id_venta:"-");?></span>
-								</p>
-								<!--Estado-->
-								<p style="margin:0px;">
-									<label class="control-label">Estado:</label> <span class="info-venta-item" id="detalles-venta-info-estado"> <?php echo (isset($venta->estado_venta)?$venta->estado_venta:"-");?></span>
-								</p>
-								<!--Facturacion-->
-								<p style="margin:0px;">
-									<label class="control-label">Estado Facturaci&oacute;n:</label> <span class="info-venta-item" id="detalles-venta-info-tipo">  <?php echo (isset($venta->tipo_venta)?$venta->tipo_venta:"-");?></span>
-								</p>
-								<!--Origen-->
-								<p style="margin:0px;">
-									<label class="control-label">Origen trans.:</label> <span class="info-venta-item" id="detalles-venta-info-origen"> <?php echo (isset($venta->origen_venta)?$venta->origen_venta:"-");?></span>
-								</p>
+								<span><strong>Documento:</strong> Ticket.</span>
 							</div>
-							
 							<div class="col-sm-4">
-								<!--Caja-->
-								<p style="margin:0px;">
-									<label class="control-label">Caja:</label> <span class="info-venta-item" id="detalles-venta-info-caja" data-value="<?php echo (isset($venta->nombre_caja)?$venta->nombre_caja:"-");?>"> <?php echo (isset($venta->nombre_caja)?$venta->nombre_caja:"-");?></span>
-								</p>
-								<!--Cajero-->
-								<p style="margin:0px;">
-									<label class="control-label">Cajero:</label> <span class="info-venta-item" id="detalles-venta-info-cajero" data-value="<?php echo (isset($venta->cajero)?$venta->cajero:"-");?>"> <?php echo (isset($venta->cajero)?$venta->cajero:"-");?></span>
-								</p>
-								<!--Vendedor-->
-								<p style="margin:0px;">
-									<label class="control-label">Vendedor:</label> <span class="info-venta-item" id="detalles-venta-info-vendedor" data-value="<?php echo (isset($venta->vendedor)?$venta->vendedor:"-");?>"> <?php echo (isset($venta->vendedor)?$venta->vendedor:"-");?></span>
-								</p>
-								<!--Condicion-->
-								<p style="margin:0px;">
-									<label class="control-label">Condici&oacute;n:</label> <span class="info-venta-item" id="detalles-venta-info-cobro"  data-value="<?php echo (isset($venta->cobro_venta)?$venta->cobro_venta:"-");?>">  <?php echo (isset($venta->cobro_venta)?$venta->cobro_venta:"-");?></span>
-								</p>
-								<!--Condicion-->
-								<p style="margin:0px;">
-									<label class="control-label">Forma de pago:</label> <span class="info-venta-item" id="detalles-venta-info-forma"> <?php echo (isset($venta->forma_pago_venta)?$venta->forma_pago_venta:"-");?></span>
-								</p>
-								<!--Estado del pago-->
-								<p style="margin:0px;">
-									<label class="control-label">Estado del pago:</label> <span class="info-venta-item" id="detalles-venta-info-estadocobro"> <?php echo (isset($venta->estado_cobro)?$venta->estado_cobro:"-");?></span>
-								</p>
-								<!--Credito-->
-								<p style="margin:0px;">
-									<label class="control-label">ID cr&eacute;dito:</label> <span class="info-venta-item" id="detalles-venta-info-fecha"> <?php echo (isset($venta->id_credito)?$venta->id_credito:"-");?></span>
-								</p>
+								<span><strong>Numero:</strong> <?php echo  str_pad($info_venta->num_doc_venta, 6, "0", STR_PAD_LEFT);?>.</span>
 							</div>
-	
 							<div class="col-sm-4">
-								<!--Descargo-->
-								<p style="margin:0px;">
-									<label class="control-label">Descargo de inventario:</label> <span class="info-venta-venta" id="detalles-venta-info-descargo"> <?php echo (isset($venta->descargo_venta)?$venta->descargo_venta:"-");?></span>
-								</p>
-								<!--Nombre-->
-								<p style="margin:0px;">
-									<label class="control-label">Cliente:</label> <span class="info-venta-venta" id="detalles-venta-info-cliente" data-value="<?php echo (isset($venta->nombre_cliente)?$venta->nombre_cliente:"-");?>"> <?php echo (isset($venta->nombre_cliente)?$venta->nombre_cliente:"-");?></span>
-								</p>
-								<!--ID cliente-->
-								<p style="margin:0px;">
-									<label class="control-label">ID Cliente:</label> <span class="info-venta-venta" id="detalles-venta-info-idcliente" data-value="<?php echo (isset($venta->id_cliente)?$venta->id_cliente:"");?>"> <?php echo (isset($venta->id_cliente)?$venta->id_cliente:"-");?></span>
-								</p>
-								<!--DUI-->
-								<p style="margin:0px;">
-									<label class="control-label">DUI:</label> <span class="info-venta-venta" id="detalles-venta-info-dui" data-value="<?php echo (isset($venta->dui_cliente)?$venta->dui_cliente:"-");?>"> <?php echo (isset($venta->dui_cliente)?$venta->dui_cliente:"-");?></span>
-								</p>
-								<!--NIT-->
-								<p style="margin:0px;">
-									<label class="control-label">NIT:</label> <span class="info-venta-venta" id="detalles-venta-info-nit" data-value="<?php echo (isset($venta->nit_cliente)?$venta->nit_cliente:"-");?>"> <?php echo (isset($venta->nit_cliente)?$venta->nit_cliente:"-");?></span>
-								</p>
-								<!--NRC-->
-								<p style="margin:0px;">
-									<label class="control-label">NRC:</label> <span class="info-venta-venta" id="detalles-venta-info-nrc" data-value="<?php echo (isset($venta->nrc_cliente)?$venta->nrc_cliente:"-");?>"> <?php echo (isset($venta->nrc_cliente)?$venta->nrc_cliente:"-");?></span>
-								</p>
+								<span><strong>Fecha:</strong> <?php echo date("d-m-Y H:i:s",strtotime($info_venta->fecha_venta));?></span>
 							</div>
-							<div class="clearfix"></div>
 						</div>
-					</div>
+						<div class="row pad-top">
+							<div class="col-sm-4">
+								<span><strong>Forma de pago:</strong>
+									<?php 
+										$pago_array=unserialize($info_venta->forma_pago_venta);
+										foreach($pago_array as $forma_pago=>$monto_pago){
+											switch($forma_pago){
+												case 0:echo "Efectivo ($".$monto_pago.") "; break;
+												case 1:echo "POS  ($".$monto_pago.") "; break;
+											}
+										}
+									?>
+								</span>
+							</div>
+						</div>	
+					</div>	
 				</div>
 			</div>
 			<!--Encabezado de la tabla de productoa-->
 			<div class="row">
-				<table class="table table-hover" style="margin:0px;">
-					<thead>
-						<tr>
-							<th style="width:15%">SKU</th>
-							<th style="width:40%">Nombre</th>
-							<th style="width:10%">Cant.</th>
-							<th style="width:10%">Costo.</th>
-							<th style="width:10%">Total.</th>
-							<th style="width:5%"></th>
-							<th style="width:10%">Quitar</th>
-						</tr>
-					</thead>
-				</table>
+			<table class="table mar-no">
+				<thead>
+					<tr>
+						<th width="50%">Producto</th>
+						<th width="15%">Cantidad</th>
+						<th width="15%">Precio</th>
+						<th width="20%">Total</th>
+					</tr>
+				</thead>
+			</table>
 			</div>
 			<!--Tabla de productos-->
 			<div class="row">
 				<div id="nueva-venta-productos-wrapper">
 					<table class="table table-hover table-striped">
 						<tbody>
-							<?php if(count($productos)>0):foreach($productos as $producto):?>
-								<tr data-interno="<?php echo $producto->interno;?>">
-									<td class='table-sku' data-value='<?php echo $producto->sku;?>'><?php echo $producto->sku;?></td>
-									<td class='table-desc' data-value='<?php echo $producto->desc;?>'><?php echo $producto->desc;?></td>
-									<td class='table-cant' data-value='<?php echo $producto->cant;?>'><?php echo $producto->cant;?></td>
-									<td class='table-precio' data-value='<?php echo $producto->costo;?>'><?php echo $producto->costo;?></td>
-									<td class='table-total' data-value='<?php echo $producto->cant*$producto->costo;?>'><?php echo $producto->cant*$producto->costo;?></td>
-									<td class='table-tipoventa' data-value='<?php echo $producto->tipo;?>'><?php switch($producto->tipo){case 0: echo 'G';break;case 1:echo 'E';break;case 2:echo 'NS';break;case 3:echo 'E';break;}?></td>
-									<td class='table-del'></td>
-								</tr>
-							<?php endforeach;endif;?>
+						<?php $total=0.00; if(count($productos)):foreach($productos as $producto):?>
+							<tr data-id="<?php echo $producto->id;?>" data-nombre="<?php echo $producto->nombre;?>" data-cant="<?php echo number_format($producto->cant,0);?>" data-precio="<?php echo number_format($producto->precio,2);?>" data-total="<?php echo number_format(($producto->cant*$producto->precio),2);?>">
+								<td><?php echo $producto->nombre;?></td>
+								<td><?php echo number_format($producto->cant,0);?></td>
+								<td><?php echo number_format($producto->precio,2);?></td>
+								<td><?php echo number_format(($producto->cant*$producto->precio),2);?></td>
+							</tr>
+							<?php $total+=($producto->cant*$producto->precio); endforeach;endif;?>
 						</tbody>
 					</table>
 				</div>

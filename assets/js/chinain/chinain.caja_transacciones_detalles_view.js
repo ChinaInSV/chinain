@@ -11,7 +11,7 @@ var Productos_salidas_detalles_venta=function(){
 	},
 	/*Inicializar componentes de la interfaz*/
 	this.initializeGUIComponets=function(){
-		$("#"+this.windowId+" #venta-detalles-wrapper").slimScroll({height:"80px",alwaysVisible:true});
+		$("#"+this.windowId+"#venta-detalles-wrapper").slimScroll({height:"80px",alwaysVisible:true});
 	},
 	this.initializeListeners=function(){
 		var _this=this;

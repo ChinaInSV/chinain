@@ -27,10 +27,6 @@
 						<span class="text-main text-semibold">Eliminado:</span><br>						
 						<span class="text-main"><?php echo ($plato->fecha_eliminado?date("d-m-Y h:i:s a",strtotime($plato->fecha_eliminado)):"(Desconocido)");?> por <?php echo ($plato->eliminador_nombre?$plato->eliminador_nombre:"(Desconocido)");?></span>								
 					</p>
-					<p>
-						<span class="text-main text-semibold">Razon:</span><br>						
-						<span class="text-main"><?php echo $plato->razon_eliminado;?></span>								
-					</p>
 					<?php endif;?>
 					<!--Notas-->
 					<p>

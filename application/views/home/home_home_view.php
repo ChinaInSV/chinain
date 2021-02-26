@@ -273,9 +273,6 @@
 									<button class="btn btn-success mar-btm pad-all" id="nueva-orden-herramientas-notas" disabled="disabled"><i class="fa fa-pencil fa-2x"></i></button>
 									<!--<button class="btn btn-purple mar-btm pad-all" id="nueva-orden-herramientas-division"><i class="fa fa-window-minimize fa-2x"></i></button>-->
 									<button class="btn btn-danger mar-btm pad-all" id="nueva-orden-herramientas-eliminar" disabled="disabled"><i class="fa fa-trash fa-2x"></i></button>
-									<?php if($config->modificar_precios->value == 1):?>
-									<button class="btn btn-mint mar-btm pad-all" id="nueva-orden-herramientas-modificar" disabled="disabled"><i class="fa fa-edit fa-2x"></i></button>
-									<?php endif;?>
 								</div>
 								<!--Tabla de la orden y cliente-->
 								<div class="col-md-10">
@@ -351,7 +348,7 @@
 							</div>
 						</div>
 					</div>
-					<?php if($promo==1 && $config->promo_segundo_plato->value == 1):?>
+					<?php if($promo==1):?>
 					<div class="alert alert-danger">
 						<button class="close" data-dismiss="alert"><i class="pci-cross pci-circle"></i></button>
 						<strong>Promocion Activa!</strong> Segundo Combo a mitad de precio
@@ -362,48 +359,6 @@
 		</div>
 		<!--MODALES-->
 		<div id="nueva-orden-modals-wrapper">
-			<!--Precios Modal-->
-			<div class="modal" id="nueva-orden-modificar-precios-<?php echo $winid;?>" data-parent="#<?php echo $winid;?>" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-				<div class="modal-dialog modal-md">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i></button>
-							<h4 class="modal-title">Cantidad y precio de <b></b></h4>
-						</div>
-						<div class="modal-body">
-							<div class="text-center mar-btm">
-								<h4 id="nueva-orden-cantidades-servicio"></h4>
-								<input type="hidden" id="nueva-orden-cantidades-servicio-id" value=""/>
-							</div>
-							<label class="control-label text-semibold text-lg">Cantidad</label>
-							<div class="input-group mar-btm">
-								<span class="input-group-btn">
-									<button class="btn btn-danger btn-lg nueva-orden-cantidades-disminuir-btn" type="button"><i class="fa fa-minus"></i></button>
-								</span>
-								<input type="text" placeholder="Cantidad" id="nueva-orden-cantidades-cantidad" class="form-control input-lg nueva-orden-cantidades-texts" value="1" step="1" min="1">
-								<span class="input-group-btn">
-									<button class="btn btn-info btn-lg nueva-orden-cantidades-aumentar-btn" type="button"><i class="fa fa-plus"></i></button>
-								</span>
-							</div>
-							<label class="control-label text-semibold text-lg">Precio</label>
-							<div class="input-group mar-btm">
-								<span class="input-group-btn">
-									<button class="btn btn-danger btn-lg nueva-orden-cantidades-disminuir-btn" type="button"><i class="fa fa-minus"></i></button>
-								</span>
-								<input type="text" placeholder="Costo" id="nueva-orden-cantidades-costo" class="form-control input-lg nueva-orden-cantidades-texts" value="1" step="5" min="1">
-								<span class="input-group-btn">
-									<button class="btn btn-info btn-lg nueva-orden-cantidades-aumentar-btn" type="button"><i class="fa fa-plus"></i></button>
-								</span>
-							</div>
-						</div>
-						<div class="modal-footer" id="nueva-orden-cantidades-buttons">
-							<button type="button" id="nueva-orden-cantidades-cancelar-btn" class="btn btn-warning btn-lg" data-dismiss="modal">Cancelar</button>
-							<button type="button" id="nueva-orden-cantidades-agregar-btn" class="btn btn-success btn-lg">Agregar plato</button>
-							<button type="button" id="nueva-orden-cantidades-actualizar-btn" class="btn btn-info btn-lg hidden">Actualizar plato</button>
-						</div>
-					</div>
-				</div>
-			</div>
 			<!--Acompanamientos modal-->
 			<div class="modal fade" id="nueva-orden-acompanamientos-plato-<?php echo $winid;?>" data-parent="#<?php echo $winid;?>" role="dialog" tabindex="-1" aria-hidden="true">
 				<div class="modal-dialog modal-lg">
@@ -561,7 +516,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+	</div>
 		<!--BOTONES-->
 		<!--<div id="nueva-orden-buttons-wrapper" class="text-center">
 			<div class="panel">
@@ -582,9 +537,7 @@
 			precios_decimal_precision: <?php echo $config->precios_decimal_precision->value;?>,
 			totales_decimal_precision: <?php echo $config->totales_decimal_precision->value;?>,
 			propina_aplicar: <?php echo $config->propina_aplicar->value;?>,
-			propina_porcentaje_aplicable: <?php echo $config->propina_porcentaje_aplicable->value;?>,
-			modificar_precios: <?php echo $config->modificar_precios->value;?>,
-			modificar_precios_add: <?php echo $config->modificar_precios_add->value;?>,
+			propina_porcentaje_aplicable: <?php echo $config->propina_porcentaje_aplicable->value;?>
 		},'<?php echo (!isset($id_orden)?"create":"update");?>');
 		
 		ordenes_nueva.ordenWizardSchema=["nueva-orden-info-wrapper","nueva-orden-contenido-wrapper"];

@@ -12,8 +12,6 @@ class Home extends CI_Controller{
 			'footer'=>array(
 				'chinain/chinain.home_view',
 				'chinain/chinain.home_ordenes_view',
-				'chinain/chinain.home_ordenes_detalles_modificar_view',
-				'chinain/chinain.Home_ordenes_dividir_cuenta_view',
 				'chinain/chinain.home_ordenes_callcenter_view',
 				'chinain/ufood.ordenes_nueva_view',
 				'chinain/ufood.caja_facturacion_cobrar_view',
@@ -199,10 +197,7 @@ class Home extends CI_Controller{
 						"totales_decimal_precision"=>(object) array("db_campo"=>"decimal_global_totales_precision","default"=>2),
 						"cant_decimal_precision"=>(object) array("db_campo"=>"decimal_global_cant_precision","default"=>2),
 						"propina_aplicar"=>(object) array("db_campo"=>"propina_aplicar","default"=>1),
-						"propina_porcentaje_aplicable"=>(object) array("db_campo"=>"propina_porcentaje_aplicable","default"=>10),
-						"modificar_precios"=>(object) array("db_campo"=>"modificar_precios","default"=>0),
-						"modificar_precios_add"=>(object) array("db_campo"=>"modificar_precios_add","default"=>0),
-						"promo_segundo_plato"=>(object) array("db_campo"=>"promo_segundo_plato","default"=>0),
+						"propina_porcentaje_aplicable"=>(object) array("db_campo"=>"propina_porcentaje_aplicable","default"=>10)
 					);
 					$UIData["config"]=$this->ufood_utilities->get_conf_value($config);
 					
@@ -256,16 +251,14 @@ class Home extends CI_Controller{
 				$config= (object) array(
 					"precios_decimal_precision"=>(object) array("db_campo"=>"decimal_individual_precios_precision","default"=>2),
 					"totales_decimal_precision"=>(object) array("db_campo"=>"decimal_global_totales_precision","default"=>2),
-					"cant_decimal_precision"=>(object) array("db_campo"=>"decimal_global_cant_precision","default"=>2),
-					"modificar_precios"=>(object) array("db_campo"=>"modificar_precios","default"=>0),
-					"modificar_precios_add"=>(object) array("db_campo"=>"modificar_precios_add","default"=>0),
+					"cant_decimal_precision"=>(object) array("db_campo"=>"decimal_global_cant_precision","default"=>2)
 				);
 				$AjaxData["config"]=$this->ufood_utilities->get_conf_value($config);
 				/*Orden*/
 				$ordenes=$this->Generic_model->get("q","ordenes","ordenes.id_orden as id,ordenes.num_orden as num_orden,ordenes.fecha_orden as fecha,salones.nombre_salon as salon,mesas.nombre_mesa as mesa,ordenes.cliente_orden as cliente,usuarios.nombre_usuario as mesero,CASE WHEN ordenes.servicio_orden=0 THEN 'Restaurante' WHEN ordenes.servicio_orden=1 THEN 'P. Llevar' WHEN ordenes.servicio_orden=2 THEN 'Habitación' WHEN ordenes.servicio_orden=3 THEN 'Banquete' END as servicio,ordenes.sub_total_orden as subtotal,ordenes.propina_orden as propina, ordenes.descuento_orden as descuento,formapago_orden as formapago",array("ordenes.id_mesa"=>$this->input->get("id"),"ordenes.estado_orden"=>0),"","",array("salones"=>"salones.id_salon=ordenes.id_salon","mesas"=>"mesas.id_mesa=ordenes.id_mesa,LEFT","usuarios"=>"usuarios.id_usuario=ordenes.usuario_orden,LEFT"));
 				
 				if(count($ordenes)):foreach($ordenes as $orden):
-					$platos_orden=$this->Generic_model->get("q","platosxorden","platosxorden.id_platoxorden as platoxorden,platosxorden.id_plato as id,platosxorden.cantidad_plato as cant,platos.nombre_plato as nombre,platosxorden.precio_plato as precio,platosxorden.notas_platoxorden as notas,platosxorden.eliminado_plato as eliminado,platosxorden.despachado_plato as despachado",array("id_orden"=>$orden->id),"","",array("platos"=>"platos.id_plato=platosxorden.id_plato"));
+					$platos_orden=$this->Generic_model->get("q","platosxorden","platosxorden.id_platoxorden as platoxorden,platosxorden.id_plato as id,platosxorden.cantidad_plato as cant,platos.nombre_plato as nombre,platosxorden.precio_plato as precio,platosxorden.notas_platoxorden as notas,platosxorden.eliminado_plato as eliminado",array("id_orden"=>$orden->id),"","",array("platos"=>"platos.id_plato=platosxorden.id_plato"));
 					if(count($platos_orden)){
 						foreach($platos_orden as $plato){
 							$plato->acompanamientos=$this->Generic_model->get("q","acompanamientosxplato","cat_acompanamientos.nombre_cat_acompanamiento as categoria, acompanamientos.nombre_acompanamiento as acompanamiento",array("id_platoxorden"=>$plato->platoxorden),"","",array("cat_acompanamientos"=>"cat_acompanamientos.id_cat_acompanamiento=acompanamientosxplato.id_cat_acompanamiento","acompanamientos"=>"acompanamientos.id_acompanamiento=acompanamientosxplato.id_acompanamiento"));
@@ -285,39 +278,6 @@ class Home extends CI_Controller{
 				
 				$this->load->view('home/home_ordenes_detalles_view',$AjaxData);
 			}
-				function dividir_cuenta(){
-					/*Configuraciones*/
-					$config= (object) array(
-						"menu_mode"=>(object) array("db_campo"=>"nueva_orden_desktop_app_default_mode","default"=>0),
-						"precios_decimal_precision"=>(object) array("db_campo"=>"decimal_individual_precios_precision","default"=>2),
-						"totales_decimal_precision"=>(object) array("db_campo"=>"decimal_global_totales_precision","default"=>2),
-						"cant_decimal_precision"=>(object) array("db_campo"=>"decimal_global_cant_precision","default"=>2),
-						"propina_aplicar"=>(object) array("db_campo"=>"propina_aplicar","default"=>1),
-						"propina_porcentaje_aplicable"=>(object) array("db_campo"=>"propina_porcentaje_aplicable","default"=>10),
-						"modificar_precios"=>(object) array("db_campo"=>"modificar_precios","default"=>0),
-						"modificar_precios_add"=>(object) array("db_campo"=>"modificar_precios_add","default"=>0),
-						"promo_segundo_plato"=>(object) array("db_campo"=>"promo_segundo_plato","default"=>0),
-					);
-					$UIDataModal["config"]=$this->ufood_utilities->get_conf_value($config);
-					/*Orden*/
-					$orden=$this->Generic_model->get("q","ordenes","ordenes.id_orden as id,ordenes.num_orden as num_orden,ordenes.fecha_orden as fecha,salones.nombre_salon as salon,mesas.nombre_mesa as mesa,mesas.id_mesa as mesa_id,ordenes.cliente_orden as cliente,usuarios.nombre_usuario as mesero,CASE WHEN ordenes.servicio_orden=0 THEN 'Restaurante' WHEN ordenes.servicio_orden=1 THEN 'P. Llevar' WHEN ordenes.servicio_orden=2 THEN 'Habitación' WHEN ordenes.servicio_orden=3 THEN 'Banquete' END as servicio,ordenes.sub_total_orden as subtotal,ordenes.propina_orden as propina, ordenes.descuento_orden as descuento",array("id_orden"=>$this->input->get("id")),"","",array("salones"=>"salones.id_salon=ordenes.id_salon","mesas"=>"mesas.id_mesa=ordenes.id_mesa,LEFT","usuarios"=>"usuarios.id_usuario=ordenes.usuario_orden,LEFT"));
-					$UIDataModal["orden"]=$orden[0];
-					/*Platos*/
-					$platos_orden=$this->Generic_model->get("q","platosxorden","platosxorden.id_platoxorden as platoxorden,platosxorden.id_plato as id,platosxorden.cantidad_plato as cant,platos.nombre_plato as nombre,platosxorden.precio_plato as precio,platosxorden.notas_platoxorden as notas,eliminado_plato as eliminado",array("id_orden"=>$this->input->get("id")),"","",array("platos"=>"platos.id_plato=platosxorden.id_plato"));
-					if(count($platos_orden)){
-						foreach($platos_orden as $plato){
-							$plato->acompanamientos=$this->Generic_model->get("q","acompanamientosxplato","cat_acompanamientos.nombre_cat_acompanamiento as categoria, acompanamientos.nombre_acompanamiento as acompanamiento",array("id_platoxorden"=>$plato->platoxorden),"","",array("cat_acompanamientos"=>"cat_acompanamientos.id_cat_acompanamiento=acompanamientosxplato.id_cat_acompanamiento","acompanamientos"=>"acompanamientos.id_acompanamiento=acompanamientosxplato.id_acompanamiento"));
-						}
-					}
-					
-					$UIDataModal["platos"]=$platos_orden;
-					$UIDataModal["title"]='Dividir Cuenta';
-					$UIDataModal["content_view"]="home/home_ordenes_dividir_cuenta_view";
-					$UIDataModal["classes"]="modal-xl";
-					$UIDataModal["id"]="ordenes-detalles-dividir-ordenes";
-
-					$this->load->view('templates/template_modal',$UIDataModal); 
-				}
 				function cambiar_estado_mesa(){
 					echo $this->Generic_model->update("mesas",array("estado_mesa"=>$this->input->get("estado")),array("id_mesa"=>$this->input->get("id")));
 				}
@@ -330,31 +290,6 @@ class Home extends CI_Controller{
 					$SQL_stmt="SELECT platos.nombre_plato as plato_nombre,notas_platoxorden as notas,";
 					$SQL_stmt.="fecha_enviado_plato as fecha_agregado,meseros.nombre_usuario as mesero,";
 					$SQL_stmt.="salones.nombre_salon as salon,mesas.nombre_mesa as mesa,";
-					$SQL_stmt.="despachado_plato as despachado,fecha_despachado_plato as fecha_despachado,despachador.nombre_usuario as despachador_nombre,";
-					$SQL_stmt.="eliminado_plato as eliminado,fecha_eliminado_plato as fecha_eliminado,eliminador.nombre_usuario as eliminador_nombre,razon_eliminado_plato as razon_eliminado";
-					$SQL_stmt.=" FROM platosxorden";
-					$SQL_stmt.=" LEFT JOIN platos ON platos.id_plato=platosxorden.id_plato";
-					$SQL_stmt.=" LEFT JOIN usuarios as meseros ON meseros.id_usuario=platosxorden.id_mesero";
-					$SQL_stmt.=" LEFT JOIN salones ON salones.id_salon=platosxorden.id_salon";
-					$SQL_stmt.=" LEFT JOIN mesas ON mesas.id_mesa=platosxorden.id_mesa";
-					$SQL_stmt.=" LEFT JOIN usuarios as despachador ON despachador.id_usuario=platosxorden.id_usuario_despacho";
-					$SQL_stmt.=" LEFT JOIN usuarios as eliminador ON eliminador.id_usuario=platosxorden.id_usuario_elimin";
-					$SQL_stmt.=" WHERE id_platoxorden=".$this->input->get("id");
-					$platoxorden=$this->Generic_model->sql_custom($SQL_stmt);
-					
-					$UIDataModal["plato"]=$platoxorden[0];
-					$this->load->view('templates/template_modal',$UIDataModal); 
-				}
-				function editar_plato_orden(){
-					$UIDataModal["title"]='Informacion del plato';
-					$UIDataModal["content_view"]="home/home_ordenes_detalles_modificar_view";
-					$UIDataModal["classes"]="modal-md";
-					$UIDataModal["id"]="ordenes-detalles-platos-ordenes";
-					/*Consulta*/
-					$SQL_stmt="SELECT platos.id_plato as id_plato,platos.nombre_plato as plato_nombre,notas_platoxorden as notas,";
-					$SQL_stmt.="fecha_enviado_plato as fecha_agregado,meseros.nombre_usuario as mesero,";
-					$SQL_stmt.="salones.nombre_salon as salon,mesas.nombre_mesa as mesa,mesas.id_mesa,";
-					$SQL_stmt.="platosxorden.cantidad_plato,platosxorden.precio_plato,platosxorden.id_platoxorden,";
 					$SQL_stmt.="despachado_plato as despachado,fecha_despachado_plato as fecha_despachado,despachador.nombre_usuario as despachador_nombre,";
 					$SQL_stmt.="eliminado_plato as eliminado,fecha_eliminado_plato as fecha_eliminado,eliminador.nombre_usuario as eliminador_nombre";
 					$SQL_stmt.=" FROM platosxorden";
@@ -440,7 +375,6 @@ class Home extends CI_Controller{
 			$UIDataModal["winID"]=($this->input->get('winid')?$this->input->get('winid'):date('YmdHis'));
 			
 			$empleados = $this->Generic_model->get("q","empleados");
-			$giftcards = $this->Generic_model->get("q","giftcards","*",array("estado_giftcard"=>0));
 			
 			if(count($empleados)):foreach($empleados as $empleado):
 				$consumo=$this->Generic_model->get("q","consumos","*",array("id_empleado"=>$empleado->id_empleado,"date(fecha_consumo)"=>date("Y-m-d")));
@@ -452,7 +386,6 @@ class Home extends CI_Controller{
 			endforeach;endif;
 			
 			$UIDataModal["empleados"]=$empleados;
-			$UIDataModal["giftcards"]=$giftcards;
 			
 			/*Configuraciones*/
 			$config= (object) array(
@@ -504,9 +437,6 @@ class Home extends CI_Controller{
 			$UIDataModal["cliente"]=$cliente;
 			
 			$this->load->view('templates/template_modal',$UIDataModal);
-		}
-		function guardar_venta_giftcard(){
-			echo 1;
 		}
 		function guardar_consumo(){
 			$fecha=gmdate('Y-m-d H:i:s', strtotime('- 6 hours'));
@@ -617,10 +547,6 @@ class Home extends CI_Controller{
 				$numero_ticket=$this->ufood_utilities->get_conf_value((object) array("ticket_correlativo"=>(object) array("db_campo"=>"ticket_correlativo","default"=>1)));
 				$numero_ticket=$numero_ticket->ticket_correlativo->value;
 				$doc_numero=$numero_ticket;				
-			}else if($documento_pago==9){
-				$numero_ticket=$this->ufood_utilities->get_conf_value((object) array("comprobante_correlativo"=>(object) array("db_campo"=>"comprobante_correlativo","default"=>1)));
-				$numero_ticket=$numero_ticket->comprobante_correlativo->value;
-				$doc_numero=$numero_ticket;
 			}else{
 				$doc_numero=$this->input->post("numero_documento");
 			}
@@ -663,7 +589,8 @@ class Home extends CI_Controller{
 				"subtotal_venta"=>$subtotal,
 				"iva_venta"=>$iva,
 				"propina_venta"=>$propina,
-				"descuento_venta"=>$descuento
+				"descuento_venta"=>$descuento,
+				"promotor_venta"=>$this->input->post("promotor"),
 			);
 			
 			$idventa=$this->Generic_model->save("ventas",$ventaData,true);
@@ -697,6 +624,27 @@ class Home extends CI_Controller{
 						"costo"=>$producto->precio
 					);
 				}
+				if($this->input->post("promotor")!=""){
+					$wantanq=$this->Generic_model->get("q","platos","*",array("nombre_plato"=>"4 Wantan Gratis Promotor"));
+					$wantanq=$wantanq[0];
+					$wantan=array(
+						"id_venta"=>$idventa,
+						"tipo_vproducto"=>0,
+						"id_plato"=>$wantanq->id_plato,
+						"cant_vproducto"=>1,
+						"costo_vproducto"=>0,
+						"promo_vproducto"=>0
+					);
+
+					$productosPrint[]=array(
+						"cant"=>1,
+						"desc"=>$wantanq->nombre_plato,
+						"costo"=>0
+					);
+					$this->Generic_model->save("vproductosxventa",$wantan);
+				}
+
+				print_r($productosPrint);
 				if($this->Generic_model->savebatch("vproductosxventa",$productosxventaData)){
 					/*modificar orden*/
 					if($orden!=null)
@@ -787,7 +735,6 @@ class Home extends CI_Controller{
 				break;
 				case "9":
 					/*Ninguno*/
-					$this->load->view('impresos/transacciones_facturacion_comprobante_view',$dataPrint);		
 				break;
 			}
 		}
@@ -799,7 +746,7 @@ class Home extends CI_Controller{
 			$fecha=gmdate('Y-m-d H:i:s', strtotime('- 6 hours'));
 			$usuario=$this->session_['userid'];
 			
-			$this->Generic_model->update("ordenes",array("estado_orden"=>3,"usuario_elimin_orden"=>$usuario,"fecha_elimin_orden"=>$fecha,"razon_elimin_orden"=>$this->input->get("razon")),array("id_orden"=>$orden->id_orden));
+			$this->Generic_model->update("ordenes",array("estado_orden"=>2,"usuario_elimin_orden"=>$usuario,"fecha_elimin_orden"=>$fecha),array("id_orden"=>$orden->id_orden));
 			
 			$ordenes_pendientes = $this->Generic_model->get("q","ordenes","*",array("id_mesa"=>$orden->id_mesa,"estado_orden"=>0));
 				
@@ -839,45 +786,6 @@ class Home extends CI_Controller{
 			
 			echo true;
 		}
-		function actualizar_platoxorden(){
-			$config= (object) array(
-				"precios_decimal_precision"=>(object) array("db_campo"=>"decimal_individual_precios_precision","default"=>2),
-				"totales_decimal_precision"=>(object) array("db_campo"=>"decimal_global_totales_precision","default"=>2),
-				"cant_decimal_precision"=>(object) array("db_campo"=>"decimal_global_cant_precision","default"=>2),
-				"propina_aplicar"=>(object) array("db_campo"=>"propina_aplicar","default"=>1),
-				"propina_porcentaje_aplicable"=>(object) array("db_campo"=>"propina_porcentaje_aplicable","default"=>10)
-			);
-			$config=$this->ufood_utilities->get_conf_value($config);
-			
-			$fecha=gmdate('Y-m-d H:i:s', strtotime('- 6 hours'));
-			$usuario=$this->session_['userid'];
-			
-			$this->Generic_model->update("platosxorden",array("cantidad_plato"=>$this->input->post("cantidad"),"precio_plato"=>$this->input->post("precio")),array("id_platoxorden"=>$this->input->post("id")));
-			
-			$orden=$this->Generic_model->get("q","platosxorden","*",array("id_platoxorden"=>$this->input->post("id")));
-			$orden=$orden[0];
-			
-			$propina=$subtotal=0;
-			
-			$platos_orden=$this->Generic_model->get("q","platosxorden","platosxorden.id_platoxorden as platoxorden,platosxorden.id_plato as id,platosxorden.cantidad_plato as cant,platos.nombre_plato as nombre,platosxorden.precio_plato as precio,platosxorden.notas_platoxorden as notas",array("id_orden"=>$orden->id_orden,"eliminado_plato"=>0),"","",array("platos"=>"platos.id_plato=platosxorden.id_plato"));
-			if(count($platos_orden)){
-				foreach($platos_orden as $plato){
-					$subtotal+=number_format(($plato->cant*$plato->precio),$config->totales_decimal_precision->value);
-					if($config->propina_aplicar->value == 1){
-						$propina = number_format(($subtotal*$config->propina_porcentaje_aplicable->value),$config->totales_decimal_precision->value);
-					}
-				}
-			}
-			
-			$dataOrden=array(
-				"sub_total_orden"=>$subtotal,
-				"propina_orden"=>$propina,
-			);
-			
-			$this->Generic_model->update("ordenes",$dataOrden,array("id_orden"=>$orden->id_orden));
-			
-			echo true;
-		}
 			function eliminar_platoxorden(){
 				$config= (object) array(
 					"precios_decimal_precision"=>(object) array("db_campo"=>"decimal_individual_precios_precision","default"=>2),
@@ -891,7 +799,7 @@ class Home extends CI_Controller{
 				$fecha=gmdate('Y-m-d H:i:s', strtotime('- 6 hours'));
 				$usuario=$this->session_['userid'];
 				
-				$this->Generic_model->update("platosxorden",array("eliminado_plato"=>1,"id_usuario_elimin"=>$usuario,"fecha_eliminado_plato"=>$fecha,"razon_eliminado_plato"=>$this->input->get("razon")),array("id_platoxorden"=>$this->input->get("id")));
+				$this->Generic_model->update("platosxorden",array("eliminado_plato"=>1,"id_usuario_elimin"=>$usuario,"fecha_eliminado_plato"=>$fecha),array("id_platoxorden"=>$this->input->get("id")));
 				
 				$orden=$this->Generic_model->get("q","platosxorden","*",array("id_platoxorden"=>$this->input->get("id")));
 				$orden=$orden[0];

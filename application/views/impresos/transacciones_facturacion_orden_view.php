@@ -14,7 +14,7 @@
 	/*Init*/
 	switch($copias):
 		case "0":
-			$printer = printer_open("POS-80C");
+			$printer = printer_open("LR2000");
 		break;
 		case "1":
 			$printer = printer_open("EPSON21B62E (L555 Series)");

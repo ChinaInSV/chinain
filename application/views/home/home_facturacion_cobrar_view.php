@@ -30,8 +30,14 @@
 						</div>
 						<!--Mixto-->
 						<div class="col-sm-6">
-							<button data-toggle="button" class="bord-weight facturacion-forma-pago-btn btn btn-block btn-lg btn-grey btn-active-info" type="button" data-tipo="2">Mixto</button>		
+							<button data-toggle="button" class="bord-weight facturacion-forma-pago-btn btn btn-block btn-lg btn-gray-dark btn-active-info" type="button" data-tipo="2">Mixto</button>		
 						</div>
+						<!-- Agregado Oswaldo -->
+						<!--Descuento-->
+						<div class="col-sm-6">
+							<button data-toggle="button" class="bord-weight facturacion-forma-pago-btn btn btn-block btn-lg btn-gray-dark btn-active-info" type="button" data-tipo="10">Descuento</button>		
+						</div>
+						<!--/oswaldo-->
 					</div>
 					<div class="col-sm-6">
 						<!--Empleado-->
@@ -89,6 +95,17 @@
 							</div>
 						</div>
 					</div>
+					<!--oswaldo-->
+					<div id="facturacion-cobrar-descuento-wrapper" style="display:none">
+						<!--POS-->
+						<div class="row mar-btm">
+							<label class="control-label col-sm-3 text-right">Valor Descuento:</label>
+							<div class="col-sm-9">
+								<input type="text" id="facturacion-cobrar-valor-descuento" class="form-control text-3x key-num" data-keyup="keyup" style="height:48px;"data-required="required">
+							</div>
+						</div>
+					</div>
+					<!--/oswaldo-->
 					<div id="facturacion-cobrar-pago-pos-wrapper" class="text-center" style="display:none">
 						<span class="text-mutted">Total POS</span>
 						<h4 class="text-3x">$ <?php echo number_format($total,$config->totales_decimal_precision->value);?></h4>
@@ -201,22 +218,38 @@
 				</div>
 				<div id="facturacion-servicio-wrapper" class="row bord-btm pad-btm">
 					<!--Comer aca-->
-					<div class="col-sm-6">
+					<div class="col-sm-3">
 						<button data-toggle="button" class="bord-weight facturacion-servicio-btn btn btn-block btn-lg btn-grey btn-active-info active" type="button" data-tipo="Para comer aca">Comer aca</button>
 					</div>
 					<!--Llevar-->
-					<div class="col-sm-6">
+					<div class="col-sm-3">
 						<button data-toggle="button" id="facturacion-servicio-llevar-btn" class="bord-weight facturacion-servicio-btn btn btn-block btn-lg btn-grey btn-active-info" type="button" data-tipo="Para llevar">Llevar</button>
 					</div>
-					<div class="col-sm-12 pad-ver">
-					</div>
 					<!--Comer aca-->
-					<div class="col-sm-6">
+					<div class="col-sm-3">
 						<button data-toggle="button" id="facturacion-servicio-domicilio-btn" class="bord-weight facturacion-servicio-btn btn btn-block btn-lg btn-grey btn-active-info" type="button" data-tipo="Domicilio">Domicilio</button>
 					</div>
 					<!--Llevar-->
-					<div class="col-sm-6">
+					<div class="col-sm-3">
 						<button data-toggle="button" class="bord-weight facturacion-servicio-btn btn btn-block btn-lg btn-grey btn-active-info" type="button" data-tipo="Domicilio a pie">Domicilio a pie</button>
+					</div>
+				</div>
+				<!--Promotor-->
+				<div class="row text-center mar-top">
+					<h4>Promotor</h4>
+				</div>
+				<div id="facturacion-promotor-wrapper" class="row bord-btm pad-btm">
+					<label class="col-sm-2 control-label">Nombre</label>
+					<div class="col-sm-10">
+						<select id="facturacion-cobrar-promotor" class="form-control input-lg">
+							<option disabled selected value="">Seleccione un promotor (No obligatorio)</option>
+							<option value="Jorge2130">Jorge Alberto Alvarado Molina (Jorge2130)</option>
+							<option value="Karen2131">Karen Eunice Galan Segura (Karen2131)</option>
+							<option value="Roberto2132">Francisco Roberto Chamagua Vasquez (Roberto2132)</option>
+							<option value="Gaby2133">Gabriela Romano Paz (Gaby2133)</option>
+							<option value="Memo2134">Guillermo Enrique Villalta Lopez (Memo2134)</option>
+							<option value="Alex2135">Humberto Alexander Gomez Calderon (Alex2135)</option>
+						</select>
 					</div>
 				</div>
 			</div>

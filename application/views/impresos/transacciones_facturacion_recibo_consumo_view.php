@@ -15,7 +15,7 @@
 	$tabheight_letter=10;
 	
 	/*Init*/
-	$printer = printer_open("EPSON TM-U950 Receipt Single");
+	$printer = printer_open("EPSON TM-U950 Receipt");
 
 	printer_set_option($printer, PRINTER_MODE, 'RAW');
 

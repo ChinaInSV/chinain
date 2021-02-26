@@ -30,7 +30,6 @@ var Ordenes_nueva=function(){
 		this.modal={
 			acompanamientos:$("#nueva-orden-acompanamientos-plato-"+_this.windowId),
 			confirmar:$("#nueva-orden-confirmar-guardar-"+_this.windowId),
-			modificar_precios:$("#nueva-orden-modificar-precios-"+_this.windowId),
 			procesar_venta:$("#facturacion-app-procesar-venta-"+_this.windowId)
 		}
 	}
@@ -226,7 +225,7 @@ var Ordenes_nueva=function(){
 			}
 		});
 		/*BOTONES agregar plato a la orden (CLICK)*/
-		$("#"+this.windowId+" #nueva-orden-platos-wrapper").on("click",".btn-plato > button",function(){
+		$("#"+this.windowId+" #nueva-orden-platos-wrapper	").on("click",".btn-plato > button",function(){
 			var plato=$(this);
 			/*Cantidad*/
 			var cant=$("#"+_this.windowId+" #norden-menu-cant-platos").val();
@@ -351,93 +350,6 @@ var Ordenes_nueva=function(){
 			});
 		}		
 		/*=======================================================================*/	
-		/*--------------------- MODAL MODIFICAR PRECIOS --------------------------*/
-		if(this.modal.modificar_precios){
-			/*BOTON Continuar modificar precios (CLICK)*/
-			this.modal.modificar_precios.on("click","#nueva-orden-cantidades-actualizar-btn",function(){
-				var selPlato=$("#"+_this.windowId+" #nueva-orden-platos-tabla tr.table-selected-item");
-				cant=parseFloat(_this.modal.modificar_precios.find("#nueva-orden-cantidades-cantidad").val());
-				precio=parseFloat(_this.modal.modificar_precios.find("#nueva-orden-cantidades-costo").val());
-				total=cant*precio;
-				cant=cant.toFixed(_this.config.cant_decimal_precision);
-				precio=precio.toFixed(_this.config.precios_decimal_precision);
-				total=total.toFixed(_this.config.precios_decimal_precision);
-				
-				if(_this.modal.modificar_precios.find("#nueva-orden-cantidades-cantidad").val()<= 0 || _this.modal.modificar_precios.find("#nueva-orden-cantidades-cantidad").val()==""){
-					_this.showMsg("error","Debe ingresar la cantidad de servicio para poder continuar");
-					$("#"+_this.windowId+" #nueva-orden-cantidades-cantidad").focus();
-				}else if(_this.modal.modificar_precios.find("#nueva-orden-cantidades-costo").val()<= 0 || _this.modal.modificar_precios.find("#nueva-orden-cantidades-costo").val()==""){
-					_this.showMsg("error","Debe ingresar el costo de servicio para poder continuar");
-					$("#"+_this.windowId+" #nueva-orden-cantidades-costo").focus();
-				}else{
-					total=(parseFloat(cant)*parseFloat(precio)).toFixed(2);
-					selPlato.attr("data-total",total);
-					selPlato.attr("data-cant",cant);
-					selPlato.attr("data-precio",precio);					
-					selPlato.find(".plato-cant-field").html(cant);
-					selPlato.find(".plato-precio-field").html(precio);
-					selPlato.find(".plato-total-field").html(total);
-					
-					_this.calcTotales();
-					_this.modal.modificar_precios.modal('hide');
-				}
-				
-			});
-			this.modal.modificar_precios.on("click","#nueva-orden-cantidades-agregar-btn",function(){
-				/*Agregar plato*/
-				var id=$("#"+_this.windowId+" #nueva-orden-agregar-plato-id").val();
-				var categoria=$("#"+_this.windowId+" #nueva-orden-agregar-plato-categoria").val();
-				//var cant=$("#"+_this.windowId+" #nueva-orden-agregar-plato-cant").val();
-				var nombre=$("#"+_this.windowId+" #nueva-orden-agregar-plato-nombre").val();
-				//var precio=$("#"+_this.windowId+" #nueva-orden-agregar-plato-precio").val();
-				var prenotas=($("#"+_this.windowId+" #nueva-orden-agregar-plato-notas").val()!=""?JSON.parse($("#"+_this.windowId+" #nueva-orden-agregar-plato-notas").val()):"");
-				var modo=$("#"+_this.windowId+" #nueva-orden-agregar-plato-modo").val();
-				var acompanamientos=$("#"+_this.windowId+" #nueva-orden-agregar-plato-acompanamientos").val();				
-				
-				if(_this.modal.modificar_precios.find("#nueva-orden-cantidades-cantidad").val()<= 0 || _this.modal.modificar_precios.find("#nueva-orden-cantidades-cantidad").val()==""){
-					_this.showMsg("error","Debe ingresar la cantidad de servicio para poder continuar");
-					$("#"+_this.windowId+" #nueva-orden-cantidades-cantidad").focus();
-				}else if(_this.modal.modificar_precios.find("#nueva-orden-cantidades-costo").val()<= 0 || _this.modal.modificar_precios.find("#nueva-orden-cantidades-costo").val()==""){
-					_this.showMsg("error","Debe ingresar el costo de servicio para poder continuar");
-					$("#"+_this.windowId+" #nueva-orden-cantidades-costo").focus();
-				}else{
-					_this.agregarPlato(modo,id,_this.modal.modificar_precios.find("#nueva-orden-cantidades-cantidad").val(),nombre,_this.modal.modificar_precios.find("#nueva-orden-cantidades-costo").val(),acompanamientos,prenotas,"",categoria);
-					_this.modal.modificar_precios.modal('hide');
-				}
-			});
-			
-			this.modal.modificar_precios.on("click",".nueva-orden-cantidades-disminuir-btn",function(){
-				var $el = $(this);
-				if($el.closest(".input-group").find(".nueva-orden-cantidades-texts").attr("id")=="nueva-orden-cantidades-cantidad"){
-					var cantidadServicio=parseFloat($el.closest(".input-group").find(".nueva-orden-cantidades-texts").val()) - 1;
-					if(cantidadServicio>0){
-						$el.closest(".input-group").find(".nueva-orden-cantidades-texts").val(cantidadServicio);
-					}
-				}else{
-					var costoServicio=parseFloat($el.closest(".input-group").find(".nueva-orden-cantidades-texts").val()) - 0.25;
-					if(costoServicio>0){
-						$el.closest(".input-group").find(".nueva-orden-cantidades-texts").val(costoServicio);
-					}
-				}
-			});
-			
-			this.modal.modificar_precios.on("click",".nueva-orden-cantidades-aumentar-btn",function(){
-				var $el = $(this);
-				if($el.closest(".input-group").find(".nueva-orden-cantidades-texts").attr("id")=="nueva-orden-cantidades-cantidad"){
-					var cantidadServicio=parseFloat($el.closest(".input-group").find(".nueva-orden-cantidades-texts").val()) + 1;
-					$el.closest(".input-group").find(".nueva-orden-cantidades-texts").val(cantidadServicio);
-				}else{
-					var costoServicio=parseFloat($el.closest(".input-group").find(".nueva-orden-cantidades-texts").val()) + 0.25;
-					$el.closest(".input-group").find(".nueva-orden-cantidades-texts").val(costoServicio);
-				}
-			});
-			
-			/*MODAL acciones al cerrar modal de modificar precios (HIDDEN)*/
-			this.modal.modificar_precios.on("hidden.bs.modal",function(){
-				$(this).appendTo("#"+_this.windowId+" #nueva-orden-modals-wrapper");
-			});
-		}
-		/*=======================================================================*/	
 		/*---------------------------------- TABLA DE PRODUCTOS ----------------------------------*/	
 		/*CELDA Seleccionar un plato de la lista(CLICK)*/
 		$("#"+this.windowId+" #nueva-orden-platos-tabla").on('click','tr',function(){
@@ -450,26 +362,14 @@ var Ordenes_nueva=function(){
 			$("#"+_this.windowId+" #nueva-orden-herramientas-disminuir").prop("disabled","disabled");
 			$("#"+_this.windowId+" #nueva-orden-herramientas-notas").prop("disabled","disabled");
 			$("#"+_this.windowId+" #nueva-orden-herramientas-eliminar").prop("disabled","disabled"); */
+			
+			
 				$("#"+_this.windowId+" #nueva-orden-herramientas-aumentar").removeAttr("disabled");
+			
 				$("#"+_this.windowId+" #nueva-orden-herramientas-disminuir").removeAttr("disabled");
 				$("#"+_this.windowId+" #nueva-orden-herramientas-notas").removeAttr("disabled");
 				$("#"+_this.windowId+" #nueva-orden-herramientas-eliminar").removeAttr("disabled");
-				$("#"+_this.windowId+" #nueva-orden-herramientas-modificar").removeAttr("disabled");
 			
-		});
-		/*BOTON Modificar la cantidad y precio de un plato (CLICK)*/
-		$("#"+this.windowId+" #nueva-orden-herramientas-modificar").click(function(){
-			var selPlato=$("#"+_this.windowId+" #nueva-orden-platos-tabla tr.table-selected-item");
-			var nombre=selPlato.attr("data-nombre");
-			var cant=selPlato.attr("data-cant");
-			var precio=selPlato.attr("data-precio");
-			_this.modal.modificar_precios.find(".modal-dialog > .modal-content > .modal-header > .modal-title > b").text(nombre);
-			_this.modal.modificar_precios.find("#nueva-orden-cantidades-cantidad").val(cant);
-			_this.modal.modificar_precios.find("#nueva-orden-cantidades-costo").val(precio);
-			_this.modal.modificar_precios.find("#nueva-orden-cantidades-agregar-btn").addClass("hidden");
-			_this.modal.modificar_precios.find("#nueva-orden-cantidades-actualizar-btn").removeClass("hidden");
-			_this.modal.modificar_precios.modal('show');
-			_this.modal.modificar_precios.appendTo("body");
 		});
 		/*BOTON Aumentar la cantidad de un plato (CLICK)*/
 		$("#"+this.windowId+" #nueva-orden-herramientas-aumentar").click(function(){
@@ -759,23 +659,9 @@ var Ordenes_nueva=function(){
 			/*Setear acompanamientos*/
 			this.setAcompanamientos(nombre,acompanamientos,prenotas,"");		
 		}else{
-			if(this.config.modificar_precios==1 && this.config.modificar_precios_add==1){
-				/*Mostrar formulario de modificar precios*/
-				_this.modal.modificar_precios.find(".modal-dialog > .modal-content > .modal-header > .modal-title > b").text(nombre);
-				_this.modal.modificar_precios.modal('show');
-				_this.modal.modificar_precios.appendTo("body");
-				_this.modal.modificar_precios.find("#nueva-orden-cantidades-cantidad").val("1");
-				_this.modal.modificar_precios.find("#nueva-orden-cantidades-costo").val(precio);
-				_this.modal.modificar_precios.find("#nueva-orden-cantidades-agregar-btn").removeClass("hidden");
-				_this.modal.modificar_precios.find("#nueva-orden-cantidades-actualizar-btn").addClass("hidden");
-			}else{
-				_this.agregarPlato(modo,id,cant,nombre,precio,acompanamientos,prenotas,"",categoria);
-				_this.updatePlatoCombo();
-			}
+			this.agregarPlato(modo,id,cant,nombre,precio,acompanamientos,prenotas,"",categoria);
+			_this.updatePlatoCombo();
 		}		
-	},
-	this.setPrices-function(){
-		
 	},
 	/*FUNCION: Colocar/editar acompanamientos y notas*/
 	this.setAcompanamientos=function(nombre,acompanamientos,prenotas,notas){
@@ -1372,6 +1258,7 @@ var Ordenes_nueva=function(){
 		var nit=info.nit;
 		var nrc=info.nrc;
 		var id_empleado=info.id_empleado;
+		var promotor=info.promotor;
 		var printVenta=false;
 		var printConsumo=false;
 		var notas=info.notas;
@@ -1441,6 +1328,7 @@ var Ordenes_nueva=function(){
 				efectivo:efectivo,
 				pos:pos,
 				cambio:cambio,
+				promotor:promotor,
 				productos:JSON.stringify(productos)
 			}).done(function(saved){
 				if(saved){

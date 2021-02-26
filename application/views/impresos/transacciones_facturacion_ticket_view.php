@@ -54,11 +54,11 @@
 	$phpPrinter->printString($phpPrinter->cutString(strtoupper(utf8_decode($direcion_empresa)),28),1,$printer,$acum,$tabheight_letter,$tabwidth_letter);
 	$phpPrinter->printString($phpPrinter->cutString(strtoupper(utf8_decode('NRC: '.$nrc_empresa)),28),1,$printer,$acum,$tabheight_letter,$tabwidth_letter);
 	$phpPrinter->printString($phpPrinter->cutString(strtoupper(utf8_decode('NIT: '.$nit_empresa)),28),1,$printer,$acum,$tabheight_letter,$tabwidth_letter);
-	$phpPrinter->printString($phpPrinter->cutString(strtoupper(utf8_decode('Autorizacion segun Resolucion')),28),1,$printer,$acum,$tabheight_letter,$tabwidth_letter);
-	$phpPrinter->printString($phpPrinter->cutString(strtoupper(utf8_decode('No '.$doc_resolucion)),28),1,$printer,$acum,$tabheight_letter,$tabwidth_letter);
-	$phpPrinter->printString($phpPrinter->cutString(strtoupper(utf8_decode('Del '.$doc_desde)),28),1,$printer,$acum,$tabheight_letter,$tabwidth_letter);
-	$phpPrinter->printString($phpPrinter->cutString(strtoupper(utf8_decode('Al '.$doc_hasta)),28),1,$printer,$acum,$tabheight_letter,$tabwidth_letter);
-	$phpPrinter->printString($phpPrinter->cutString(utf8_decode('Ticket '.$doc_numero),28),1,$printer,$acum,$tabheight_letter,$tabwidth_letter);
+	//$phpPrinter->printString($phpPrinter->cutString(strtoupper(utf8_decode('Autorizacion segun Resolucion')),28),1,$printer,$acum,$tabheight_letter,$tabwidth_letter);
+	//$phpPrinter->printString($phpPrinter->cutString(strtoupper(utf8_decode('No '.$doc_resolucion)),28),1,$printer,$acum,$tabheight_letter,$tabwidth_letter);
+	//$phpPrinter->printString($phpPrinter->cutString(strtoupper(utf8_decode('Del '.$doc_desde)),28),1,$printer,$acum,$tabheight_letter,$tabwidth_letter);
+	//$phpPrinter->printString($phpPrinter->cutString(strtoupper(utf8_decode('Al '.$doc_hasta)),28),1,$printer,$acum,$tabheight_letter,$tabwidth_letter);
+	$phpPrinter->printString($phpPrinter->cutString(utf8_decode('Recibo '.$doc_numero),28),1,$printer,$acum,$tabheight_letter,$tabwidth_letter);
 	$phpPrinter->printString($phpPrinter->cutString(strtoupper(utf8_decode('Caja: '.$caja)),28),1,$printer,$acum,$tabheight_letter,$tabwidth_letter);
 	$phpPrinter->printString($phpPrinter->cutString(strtoupper(utf8_decode('Vendedor: '.$vendedor)),28),1,$printer,$acum,$tabheight_letter,$tabwidth_letter);
 	

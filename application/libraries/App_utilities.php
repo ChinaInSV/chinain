@@ -9,18 +9,19 @@ class App_utilities{
 	function send($mensaje,$tipo,$empresa){	
 		$config = Array(
 			'protocol' => 'smtp',
-			'smtp_host' => 'mail.smtp2go.com',
-			'smtp_port' => 2525,
+			'smtp_host' => 'in-v3.mailjet.com',
+			'smtp_port' => 587,
 			'mailtype' => 'html',
-			'smtp_user' => 'omar_arper@hotmail.com',
-			'smtp_pass' => 'arperADI1987!'
+			'smtp_user' => 'c0d4ba9a4663dbae6a63223e89a07aa1',
+			'smtp_pass' => '1b213d492d8109c12aaecbef532d8cd7'
 		);
 
 		$this->CI->load->library('email',$config);
 		$this->CI->email->set_newline("\r\n");
-
 		$this->CI->email->from("omar_arper@hotmail.com");
-		$this->CI->email->to("omararper@gmail.com");
+		$this->CI->email->to("omararper@gmail.com,cruzerenia@gmail.com,rycpubli@gmail.com,semedrano.30@gmail.com,e.guevara@estacioncelular.com,cristiangj730@gmail.com,carpaa.diaz@gmail.com");
+		
+		//$this->CI->email->to("omararper@gmail.com");
 		if($tipo==2){
 			$this->CI->email->subject("Detalle de Ventas Total ".$this->fechaHoraElSalvador(date("Y-m-d"),1)." en China In ".$empresa);
 		}else{

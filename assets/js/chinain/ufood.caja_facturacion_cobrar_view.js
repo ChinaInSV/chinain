@@ -55,6 +55,7 @@ var Caja_facturacion_cobrar=function(){
 				$(active).removeClass("active");				
 			}
 			var tipo=$(this).attr("data-tipo");
+			$("#"+_this.windowId+" #facturacion-cobrar-descuento-wrapper").hide();
 			$("#"+_this.windowId+" #facturacion-cobrar-pago-mixto-wrapper").hide();
 			$("#"+_this.windowId+" #facturacion-cobrar-pago-efectivo-wrapper").hide();
 			$("#"+_this.windowId+" #facturacion-cobrar-pago-pos-wrapper").hide();
@@ -93,6 +94,12 @@ var Caja_facturacion_cobrar=function(){
 						setTimeout(function(){ $("#"+_this.windowId+" #facturacion-cobrar-pago-efectivo-consumo").focus(); }, 200);
 					}
 					$("#"+_this.windowId+" .facturacion-servicio-btn").prop("disabled",true).removeClass("active").first().addClass("active");				
+				break;
+				case "10":/*Descuento*/
+				$("#"+_this.windowId+" .facturacion-documento-ticket-wrapper,#"+_this.windowId+" .facturacion-documento-ccf-wrapper,#"+_this.windowId+" .facturacion-documento-factura-wrapper").show().find("button.facturacion-documento-btn-default").trigger("click");
+				$("#"+_this.windowId+" #facturacion-cobrar-descuento-wrapper").show();
+					$("#"+_this.windowId+" #facturacion-cliente-wrapper").show();
+					setTimeout(function(){ $("#"+_this.windowId+" #facturacion-cobrar-valor-descuento").focus(); }, 200);					
 				break;
 			}
 		});
@@ -137,6 +144,11 @@ var Caja_facturacion_cobrar=function(){
 				break;
 				case "3":
 					$("#"+_this.windowId+" #facturacion-documento-numero").prop("disabled","disabled").val("");	
+					setTimeout(function(){ $("#"+_this.windowId+" #facturacion-documento-numero").focus(); }, 200);					
+				break;
+
+				case "10":
+					$("#"+_this.windowId+" #facturacion-documento-numero").prop("disabled","").val("");
 					setTimeout(function(){ $("#"+_this.windowId+" #facturacion-documento-numero").focus(); }, 200);					
 				break;
 			}
@@ -324,6 +336,7 @@ var Caja_facturacion_cobrar=function(){
 				nrc:$("#"+_this.windowId+" #facturacion-documento-nrc").val(),
 				empleado:$("#"+_this.windowId+" #facturacion-cobrar-pago-empleado option:selected").text(),
 				id_empleado:$("#"+_this.windowId+" #facturacion-cobrar-pago-empleado option:selected").val(),
+				promotor:$("#"+_this.windowId+" #facturacion-cobrar-promotor option:selected").val(),
 				descuento:0,
 			});
 			Custombox.close();

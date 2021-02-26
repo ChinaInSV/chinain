@@ -97,16 +97,6 @@ var Home_ordenes_callcenter=function(){
 				$("#home-main-wrapper").html(home);
 			},"html");
 		});
-		
-		$("#"+this.windowId).on("click",".orden-detalles-precuenta-btn",function(e){
-			var id=$(this).attr("data-id");
-			e.preventDefault();
-			$.get(_this.baseUrl+"home/imprimirPrecuenta?id="+id,function(result){
-				if(result){
-					_this.showMsg("success","Se ha enviado el Estado de Cuenta de esta Orden a impresion exitosamente");
-				}
-			});
-		});
 	},
 	/*Inicializar componentes de la interfaz*/
 	this.initializeGUIComponets=function(){

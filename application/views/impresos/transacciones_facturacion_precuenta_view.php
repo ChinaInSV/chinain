@@ -27,8 +27,8 @@
 	$font = printer_create_font('Arial', 10, 8, PRINTER_FW_BOLD, false, false, false, 0);	
 	printer_select_font($printer, $font);
 	
-	printer_draw_bmp($printer, "C:\\logo.bmp", 20, 1,300,80);
-	$phpPrinter->tabPrinter($acum,80);
+	printer_draw_bmp($printer, "C:\\logo.bmp", 20, 1,300,180);
+	$phpPrinter->tabPrinter($acum,160);
 	
 	$phpPrinter->printString($phpPrinter->cutString(strtoupper(utf8_decode($nombre_empresa)),25),1,$printer,$acum,8,10);
 	

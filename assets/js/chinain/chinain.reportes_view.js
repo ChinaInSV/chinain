@@ -96,35 +96,6 @@ var Reportes=function(){
 				_this.makeReport("reporte_platos",data);				
 			}
 		});
-
-		/*Consumos*/
-		$("#"+this.windowId+" #reporte-consumos-btn,#"+this.windowId+" #reporte-consumos-excel-btn").click(function(e){
-			e.preventDefault();
-			var valid=false;
-			var $el = $(this);
-			
-			if($("#"+_this.windowId+" #reporte-consumos-fechadesde-day").val()==""){
-					ChinaInTools.showMsg("error","Favor ingrese una fecha de inicio");$("#"+_this.windowId+" #reporte-consumos-fechadesde-day").focus();
-				}else if($("#"+_this.windowId+" #reporte-consumos-fechahasta-day").val()==""){
-					ChinaInTools.showMsg("error","Favor ingrese una fecha de final");$("#"+_this.windowId+" #reporte-consumos-fechahasta-day").focus();
-				}else{
-					fechadesde = $("#"+_this.windowId+" #reporte-consumos-fechadesde-day").val();
-					fechahasta = $("#"+_this.windowId+" #reporte-consumos-fechahasta-day").val();
-					valid=true;
-				}
-			
-			if(valid){
-				var data={
-					tipo: $el.data("mode"),
-					forma:$("#"+_this.windowId+" #reporte-consumos-forma").val(),
-					fechadesde:fechadesde,
-					fechahasta:fechahasta,
-					empleados:$("#"+_this.windowId+" #reporte-consumos-empleados").is(":checked"),
-					cero:$("#"+_this.windowId+" #reporte-consumos-cero").is(":checked"),
-				};
-				_this.makeReport("reporte_consumos",data);				
-			}
-		});
 		
 		////////////
 		/*Graficos*/
