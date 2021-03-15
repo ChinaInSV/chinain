@@ -4,7 +4,7 @@ class Callcenter extends CI_Controller{
 		parent::__construct();
 		/* $this->is_logged_in(); */
 		$this->load->model('Callcenter_model');
-		$this->restaurante_id=5; /*ID RESTAURANTE <- Colocar id del restaurante correspondiente, verificar usando funcion http://[direccion_sistema_sucursal]/callcenter/comprobar_restaurante*/
+		$this->restaurante_id=null; /*ID RESTAURANTE <- Colocar id del restaurante correspondiente, verificar usando funcion http://[direccion_sistema_sucursal]/callcenter/comprobar_restaurante*/
 	}
 	function comprobar_restaurante(){
 		$restaurante_callcenter=$this->Callcenter_model->get("q","restaurantes","id_restaurante,nombre_restaurante,direccion_restaurante,nombre_departamento,nombre_municipio",array("id_restaurante"=>$this->restaurante_id),"","",array("departamentos"=>"departamentos.id_departamento=restaurantes.id_departamento","municipios"=>"municipios.id_municipio=restaurantes.id_municipio"));
