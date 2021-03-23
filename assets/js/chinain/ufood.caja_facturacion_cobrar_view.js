@@ -48,6 +48,42 @@ var Caja_facturacion_cobrar=function(){
 				_this.calcCambioConsumo($(this).val());
 			}
 		});
+		/* jjos vale*/
+		$("#"+this.windowId+" #facturacion-cobrar-pago-codigo-vale").focusout(function(e){
+			if(e.which==13){
+				$("#"+_this.windowId+" #facturacion-cobrar-pago-cobrar-btn").trigger("click");
+			}else{
+				_this.showMsg('info','Validando Codigo');
+				//_this.calcPagoVale($(this).val());
+				$.post(_this.baseUrl+"callcenter/getVale",{codeVale:$.trim($("#facturacion-cobrar-pago-codigo-vale").val())},function(response){
+					//console.log(response);
+					if(response=="DNT"){
+						_this.showMsg('error', 'Vale no Encontrado');
+					}else if(response == "WAU"){
+						_this.showMsg('error', 'Vale ya se cangeo');
+					}else if(response=="VE"){
+						_this.showMsg('error', 'Vale Expirado');
+					}else{
+						var obj = JSON.parse(response);
+						//console.log(obj[0].valor);
+						var ValorVale =parseFloat(obj[0].valor);
+						$("#"+_this.windowId+" #facturacion-cobrar-pago-valor-vale").val(ValorVale.toFixed(2));
+						var total=$("#"+_this.windowId+" #facturacion-cobrar-pago-total").val();
+						var cambio= ValorVale-parseFloat(total);
+						$("#"+_this.windowId+" #facturacion-cobrar-pago-cambio-vale").val(cambio.toFixed(2));
+					}
+				});
+			}
+		});
+
+		$("#"+this.windowId+" #facturacion-cobrar-pago-efectivo-vale").keyup(function(e){
+			if(e.which==13){
+				$("#"+_this.windowId+" #facturacion-cobrar-pago-cobrar-btn").trigger("click");
+			}else{
+				_this.calcCambioVale($(this).val());
+			}
+		});
+		/* jjos vale end*/
 		
 		$("#"+this.windowId+" .facturacion-forma-pago-btn").click(function(){
 			var active=$("#"+_this.windowId+" #facturacion-forma-pago-wrapper").find("button.active");
@@ -55,6 +91,7 @@ var Caja_facturacion_cobrar=function(){
 				$(active).removeClass("active");				
 			}
 			var tipo=$(this).attr("data-tipo");
+			$("#"+_this.windowId+" #facturacion-cobrar-pago-vale-wrapper").hide();
 			$("#"+_this.windowId+" #facturacion-cobrar-descuento-wrapper").hide();
 			$("#"+_this.windowId+" #facturacion-cobrar-pago-mixto-wrapper").hide();
 			$("#"+_this.windowId+" #facturacion-cobrar-pago-efectivo-wrapper").hide();
@@ -84,6 +121,12 @@ var Caja_facturacion_cobrar=function(){
 					$("#"+_this.windowId+" #facturacion-cobrar-pago-mixto-wrapper").show();
 					$("#"+_this.windowId+" #facturacion-cliente-wrapper").show();
 					setTimeout(function(){ $("#"+_this.windowId+" #facturacion-cobrar-pago-pos-mixto").focus(); }, 200);					
+				break;
+				case "7":/*Vale*/
+				$("#"+_this.windowId+" .facturacion-documento-ticket-wrapper,#"+_this.windowId+" .facturacion-documento-ccf-wrapper,#"+_this.windowId+" .facturacion-documento-factura-wrapper").show().find("button.facturacion-documento-btn-default").trigger("click");
+				$("#"+_this.windowId+" #facturacion-cobrar-pago-vale-wrapper").show();
+					$("#"+_this.windowId+" #facturacion-cliente-wrapper").show();
+					setTimeout(function(){ $("#"+_this.windowId+" #facturacion-cobrar-codigo-vale").focus(); }, 200);					
 				break;
 				case "9":/*Consumo Empleado*/
 					$("#"+_this.windowId+" .facturacion-documento-recibo-wrapper").show().find("button").trigger("click").prop("disabled",true);					
@@ -235,6 +278,57 @@ var Caja_facturacion_cobrar=function(){
 							sendInfo=false;
 						}
 					}break;
+					/*jos vale*/
+					case "7":{/*vale*/ 
+						var code_vale=parseFloat($("#"+_this.windowId+" #facturacion-cobrar-pago-codigo-vale").val());
+						if(code_vale !==""){
+							var cambio=parseFloat($("#"+_this.windowId+" #facturacion-cobrar-pago-cambio-vale").val());
+							if(!isNaN(cambio)){
+								var total=parseFloat($("#"+_this.windowId+" #facturacion-cobrar-pago-total").val());
+								var efectivo=parseFloat($("#"+_this.windowId+" #facturacion-cobrar-pago-efectivo-vale").val());
+								var valorVale=parseFloat($("#"+_this.windowId+" #facturacion-cobrar-pago-valor-vale").val());
+								if(efectivo>=total){
+									_this.showMsg("error","En un pago con Vale el efectivo no puede ser mayor que el total");
+									$("#"+_this.windowId+" #facturacion-cobrar-pago-efectivo-mixto").focus();
+									sendInfo=false;
+								}else if(valorVale>=total){
+								
+								sendInfo=false;
+
+									swal({
+										title: "¿Desea Proceder?",
+										text: "Esta acción canjeara en su totalidad el vale. ¿Esta seguro que desea continuar?",
+										type: "warning",
+										showCancelButton: true,
+										confirmButtonColor: "#DD6B55",
+										confirmButtonText: "Si, Proceder",
+										cancelButtonText: "Cancelar",
+									},function(isConfirm){
+										if(isConfirm){
+											$("#"+_this.windowId+" #facturacion-cobrar-pago-cambio-vale").val(0.00);
+											_this.setInfo();
+										}
+									});	
+									
+									
+								}else if((efectivo+valorVale) >= total){
+									sendInfo=true;
+								}else{
+									_this.showMsg("error","Ingrese un valor v&aacute;lido para el efectivo");
+									$("#"+_this.windowId+" #facturacion-cobrar-pago-efectivo-vale").focus();
+									sendInfo=false;
+								}
+							}else{
+								_this.showMsg("error","Ingrese un valor v&aacute;lido para el efectivo");
+								$("#"+_this.windowId+" #facturacion-cobrar-pago-efectivo-mixto").focus();
+								sendInfo=false;
+							}
+						}else{
+							_this.showMsg("error","El codigo del vale no puede estar en blanco, ingrese un codigo");
+							$("#"+_this.windowId+" #facturacion-cobrar-pago-codigo-vale").focus();
+							sendInfo=false;
+						}
+					}break;
 					case "9":{/*Consumo*/
 						var id_empleado=$("#"+_this.windowId+" #facturacion-cobrar-pago-empleado").val();
 						var cambio=parseFloat($("#"+_this.windowId+" #facturacion-cobrar-pago-cambio-consumo").val());
@@ -288,6 +382,31 @@ var Caja_facturacion_cobrar=function(){
 		var cambio=parseFloat(efectivo)-(parseFloat(total)-parseFloat(pos));
 		$("#"+this.windowId+" #facturacion-cobrar-pago-cambio-mixto").val(cambio.toFixed(2));
 	}
+
+
+	this.calcCambioVale=function(efectivo){
+		var total=$("#"+this.windowId+" #facturacion-cobrar-pago-total").val();
+		var vale=$("#"+this.windowId+" #facturacion-cobrar-pago-valor-vale").val();
+		var cambio=parseFloat(efectivo)-(parseFloat(total)-parseFloat(vale));
+		$("#"+this.windowId+" #facturacion-cobrar-pago-cambio-vale").val(cambio.toFixed(2));
+	}
+	/* jos
+
+	this.calcPagoVale=function(code){
+
+		$.post(this.baseUrl+"callcenter/getVale",{codeVale:$.trim($("#facturacion-cobrar-pago-codigo-vale").val())},function(response){
+			//console.log(response);
+			if(response=="DNT"){
+				this.showMsg('error', 'Vale no Encontrado');
+			}else{
+
+			}
+		});
+
+
+	}
+	*/
+
 	/*Mostrar un mensaje*/
 	this.showMsg=function(tipo, mensaje){
 		toastr.options = {
@@ -300,6 +419,8 @@ var Caja_facturacion_cobrar=function(){
 	this.setInfo=function(){
 		var _this=this;
 		var pos=0;
+		var vale=0;
+		var efectivo =0;
 		var forma_pago=$("#"+this.windowId+" #facturacion-forma-pago-wrapper").find("button.active");
 		var documento_pago=$("#"+this.windowId+" #facturacion-documento-wrapper").find("button.active");
 		var servicio=$("#"+this.windowId+" #facturacion-servicio-wrapper").find("button.active");
@@ -312,6 +433,10 @@ var Caja_facturacion_cobrar=function(){
 			efectivo=parseFloat($("#"+_this.windowId+" #facturacion-cobrar-pago-efectivo-mixto").val());
 			pos=parseFloat($("#"+_this.windowId+" #facturacion-cobrar-pago-pos-mixto").val());
 			cambio=parseFloat($("#"+_this.windowId+" #facturacion-cobrar-pago-cambio-mixto").val());
+		}else if($(forma_pago).attr("data-tipo")==7){
+			efectivo=parseFloat($("#"+_this.windowId+" #facturacion-cobrar-pago-efectivo-vale").val());
+			vale=parseFloat($("#"+_this.windowId+" #facturacion-cobrar-pago-valor-vale").val());
+			cambio=parseFloat($("#"+_this.windowId+" #facturacion-cobrar-pago-cambio-vale").val());
 		}else{
 			efectivo=parseFloat($("#"+_this.windowId+" #facturacion-cobrar-pago-efectivo").val());
 			cambio=parseFloat($("#"+_this.windowId+" #facturacion-cobrar-pago-cambio").val());
@@ -326,6 +451,7 @@ var Caja_facturacion_cobrar=function(){
 				servicio:$(servicio).attr("data-tipo"),
 				efectivo:efectivo,
 				pos:pos,
+				vale:vale,
 				cambio:cambio,
 				numero_documento:$("#"+_this.windowId+" #facturacion-documento-numero").val(),
 				notas:$("#"+_this.windowId+" #facturacion-cobrar-pago-notas").val(),

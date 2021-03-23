@@ -302,4 +302,23 @@ class Callcenter extends CI_Controller{
 			endforeach;
 		endif;
 	}
+
+	public function getVale(){
+		$select = "id_vale, code, valor, date_create, expiration, date_expiration, status";
+
+		$vale=$this->Callcenter_model->get("q", "vales", $select, array("code"=>$this->input->post('codeVale')));
+	
+		if(count($vale)){
+			if($vale[0]->status == 1){
+				
+				echo json_encode($vale);
+			}else{
+				echo "WAU";
+			}
+		}else{
+			echo "DNT";
+			
+		}
+	}
+	
 }

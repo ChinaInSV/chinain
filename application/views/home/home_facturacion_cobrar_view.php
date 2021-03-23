@@ -35,7 +35,7 @@
 						<!-- Agregado Oswaldo -->
 						<!--Descuento-->
 						<div class="col-sm-6">
-							<button data-toggle="button" class="bord-weight facturacion-forma-pago-btn btn btn-block btn-lg btn-gray-dark btn-active-info" type="button" data-tipo="10">Descuento</button>		
+							<button data-toggle="button" class="bord-weight facturacion-forma-pago-btn btn btn-block btn-lg btn-gray-dark btn-active-info" type="button" data-tipo="10" disabled>Descuento</button>		
 						</div>
 						<!--/oswaldo-->
 					</div>
@@ -50,7 +50,7 @@
 						</div>
 						<!--Tarjetas-->
 						<div class="col-sm-6">
-							<button data-toggle="button" class="bord-weight facturacion-forma-pago-btn btn btn-block btn-lg btn-gray-dark btn-active-info" type="button" data-tipo="7" disabled>Tarjeta</button>		
+							<button data-toggle="button" class="bord-weight facturacion-forma-pago-btn btn btn-block btn-lg btn-gray-dark btn-active-info" type="button" data-tipo="7" >Vale</button>		
 						</div>
 					</div>
 					
@@ -95,9 +95,9 @@
 							</div>
 						</div>
 					</div>
-					<!--oswaldo-->
+					<!--jos desc-->
 					<div id="facturacion-cobrar-descuento-wrapper" style="display:none">
-						<!--POS-->
+						<!--Descuento-->
 						<div class="row mar-btm">
 							<label class="control-label col-sm-3 text-right">Valor Descuento:</label>
 							<div class="col-sm-9">
@@ -105,7 +105,38 @@
 							</div>
 						</div>
 					</div>
-					<!--/oswaldo-->
+					<!--/jos desc-->
+					<!--jos vale-->
+					<div id="facturacion-cobrar-pago-vale-wrapper" style="display:none">
+						<!--VALE-->
+						<div class="row mar-btm">
+							<label class="control-label col-sm-3 text-right">Codigo Vale:</label>
+							<div class="col-sm-9">
+								<input type="text" id="facturacion-cobrar-pago-codigo-vale" class="form-control text-3x key-num" data-keyup="keyup" style="height:48px;"data-required="required">
+							</div>
+						</div>
+						<div class="row mar-btm">
+							<label class="control-label col-sm-3 text-right">Valor Vale:</label>
+							<div class="col-sm-9">
+								<input type="text" id="facturacion-cobrar-pago-valor-vale" class="form-control text-3x key-num" data-keyup="keyup" style="height:48px;"data-required="required" readonly value="0.00">
+							</div>
+						</div>
+							<!--Efectivo-->
+							<div class="row mar-btm">
+							<label class="control-label col-sm-3 text-right">Efectivo:</label>
+							<div class="col-sm-9">
+								<input type="text" id="facturacion-cobrar-pago-efectivo-vale" class="form-control text-3x key-num" data-keyup="keyup" style="height:48px;"data-required="required">
+							</div>
+						</div>
+						<!--Cambio-->
+						<div class="row mar-btm">
+							<label class="control-label col-sm-3 text-right">Cambio:</label>
+							<div class="col-sm-9">
+								<input type="text" id="facturacion-cobrar-pago-cambio-vale" class="form-control text-3x" style="height:48px;" value="0.00"readonly="true">
+							</div>
+						</div>
+					</div>
+					<!--/jos vale-->
 					<div id="facturacion-cobrar-pago-pos-wrapper" class="text-center" style="display:none">
 						<span class="text-mutted">Total POS</span>
 						<h4 class="text-3x">$ <?php echo number_format($total,$config->totales_decimal_precision->value);?></h4>
